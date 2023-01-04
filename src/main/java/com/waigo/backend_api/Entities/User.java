@@ -3,6 +3,8 @@ package com.waigo.backend_api.Entities;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
+import java.util.Set;
+
 @Entity
 public class User {
     public User() {
@@ -32,6 +34,9 @@ public class User {
     private String photo;
     @NonNull
     private String password;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Event> events;
 
     public Integer getId() {
         return id;
