@@ -1,42 +1,58 @@
 package com.waigo.backend_api.Entities;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class User {
-    public User() {
 
-    }
 
-    public User(User user) {
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-        this.description = user.getDescription();
-        this.photo = user.getPhoto();
-        this.password = user.getPassword();
-    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Nonnull
     private String firstName;
 
     private String lastName;
-    @NonNull
-    @Column(unique = true)
+    
+    @Nonnull
     private String email;
+
     private String description;
     private String photo;
-    @NonNull
+
+    @Nonnull
     private String password;
 
     @OneToMany(mappedBy = "owner")
     private Set<Event> events;
+
+    @ManyToMany(cascade = {CascadeType.DETACH})
+    @JoinTable(
+        name = "User_Feed",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "feed_id", referencedColumnName = "id")}
+    )
+    private Set<Feed> feeds = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<Message> messages;
+
+
+    public User(){}
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
@@ -93,4 +109,25 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+    public Set<Message> getMessages() {
+        return messages;
+    }
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
+    public Set<Feed> getFeeds() {
+        return feeds;
+    }
+    public void setFeeds(Set<Feed> feeds) {
+        this.feeds = feeds;
+    }
+
+    
 }
