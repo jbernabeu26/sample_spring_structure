@@ -1,4 +1,4 @@
-package com.waigo.backend_api.Entities;
+package com.waigo.backend_api.Model.Entities;
 
 import java.util.HashSet;
 import java.util.Set;

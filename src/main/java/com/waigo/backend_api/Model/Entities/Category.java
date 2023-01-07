@@ -1,4 +1,4 @@
-package com.waigo.backend_api.Entities;
+package com.waigo.backend_api.Model.Entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.waigo.backend_api.Entities;
+package com.waigo.backend_api.Model.Entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
@@ -28,8 +28,8 @@ public class Event {
     private LocalDate endDate;
 
     @Nonnull
-    private PrivacityStatus privacity;
-    public enum PrivacityStatus {
+    private PrivacyStatus privacy;
+    public enum PrivacyStatus {
         PUBLIC,
         PRIVATE,
         MIXED;
@@ -80,14 +80,14 @@ public class Event {
     public Event(){}
 
 
-    public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacityStatus privacity,
+    public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacyStatus privacy,
             Integer maxParticipants, Set<Category> categories, Set<Interest> interests, Set<Location> locations,
             Set<Feed> feeds, User owner) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.privacity = privacity;
+        this.privacy = privacy;
         this.maxParticipants = maxParticipants;
         this.categories = categories;
         this.interests = interests;
@@ -157,13 +157,13 @@ public class Event {
     }
 
 
-    public PrivacityStatus getPrivacity() {
-        return privacity;
+    public PrivacyStatus getPrivacity() {
+        return privacy;
     }
 
 
-    public void setPrivacity(PrivacityStatus privacity) {
-        this.privacity = privacity;
+    public void setPrivacity(PrivacyStatus privacy) {
+        this.privacy = privacy;
     }
 
 
