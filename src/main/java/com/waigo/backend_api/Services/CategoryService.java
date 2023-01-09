@@ -7,6 +7,6 @@ public interface CategoryService {
     // AQUI VAN DECLARADOS TODOS LOS METODOS QUE UTILIZAREMOS PARA LAS CATEGORIAS
 
     public void addCategory(Category category);
-    
+
 
 }

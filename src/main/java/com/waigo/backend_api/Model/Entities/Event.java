@@ -2,6 +2,7 @@ package com.waigo.backend_api.Model.Entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -21,7 +22,8 @@ public class Event {
     @Nonnull
     private String description;
     @Nonnull
-    private Double[] geolocation;
+    @ElementCollection
+    private double[] geolocation;
     @Nonnull
     private LocalDate startDate;
     @Nonnull
@@ -29,6 +31,7 @@ public class Event {
 
     @Nonnull
     private PrivacyStatus privacy;
+
     public enum PrivacyStatus {
         PUBLIC,
         PRIVATE,
@@ -38,36 +41,36 @@ public class Event {
     @Nonnull
     private Integer maxParticipants;
 
+    @ElementCollection
     private List<String> photos;
-
 
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
-        name = "Category_Event",
-        joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
+            name = "Category_Event",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
     )
     private Set<Category> categories = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
-        name = "Interest_Event",
-        joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "interest_id", referencedColumnName = "id")}
+            name = "Interest_Event",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "interest_id", referencedColumnName = "id")}
     )
     private Set<Interest> interests = new HashSet<>();
 
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
-        name = "Location_Event",
-        joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "location_id", referencedColumnName = "id")}
+            name = "Location_Event",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "location_id", referencedColumnName = "id")}
     )
     private Set<Location> locations = new HashSet<>();
 
-   
+
     @OneToMany(mappedBy = "event")
     private Set<Feed> feeds;
 
@@ -77,12 +80,13 @@ public class Event {
     private User owner;
 
 
-    public Event(){}
+    public Event() {
+    }
 
 
     public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacyStatus privacy,
-            Integer maxParticipants, Set<Category> categories, Set<Interest> interests, Set<Location> locations,
-            Set<Feed> feeds, User owner) {
+                 Integer maxParticipants, Set<Category> categories, Set<Interest> interests, Set<Location> locations,
+                 Set<Feed> feeds, User owner) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -127,12 +131,12 @@ public class Event {
     }
 
 
-    public Double[] getGeolocation() {
+    public double[] getGeolocation() {
         return geolocation;
     }
 
 
-    public void setGeolocation(Double[] geolocation) {
+    public void setGeolocation(double[] geolocation) {
         this.geolocation = geolocation;
     }
 
@@ -235,11 +239,6 @@ public class Event {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
-    
-
-    
-
 
 
 }

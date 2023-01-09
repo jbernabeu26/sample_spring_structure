@@ -1,7 +1,10 @@
 package com.waigo.backend_api.Model.Entities;
 
-import jakarta.annotation.Nonnull;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
 
 import java.util.HashSet;
@@ -15,7 +18,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Nonnull
+    @NotNull(message = "Name may not be null")
+    @NotEmpty(message = "Name may not be empty")
+    @NotBlank(message = "Name may not black")
     @Column(unique = true)
     private String name;
 
@@ -26,30 +31,36 @@ public class Category {
     private Set<Event> events = new HashSet<>();
 
 
-    public Category(){
-        this.name = "NoName";
+    public Category() {
     }
+
     public Category(@NonNull String name) {
         this.name = name;
     }
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Set<Event> getEvents() {
         return events;
     }
+
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
 
-    
+
 }
