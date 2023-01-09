@@ -3,13 +3,10 @@ package com.waigo.backend_api.Model.Entities;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class User {
-
-
 
 
     @Id
@@ -20,7 +17,7 @@ public class User {
     private String firstName;
 
     private String lastName;
-    
+
     @Nonnull
     private String email;
 
@@ -33,20 +30,17 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private Set<Event> events;
 
-    @ManyToMany(cascade = {CascadeType.DETACH})
-    @JoinTable(
-        name = "User_Feed",
-        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "feed_id", referencedColumnName = "id")}
-    )
-    private Set<Feed> feeds = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<UserFeedBridge> userFeedBridge;
 
 
     @OneToMany(mappedBy = "user")
     private Set<Message> messages;
 
 
-    public User(){}
+    public User() {
+    }
+
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,21 +107,21 @@ public class User {
     public Set<Event> getEvents() {
         return events;
     }
+
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
+
     public Set<Message> getMessages() {
         return messages;
     }
+
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
-    public Set<Feed> getFeeds() {
-        return feeds;
-    }
-    public void setFeeds(Set<Feed> feeds) {
-        this.feeds = feeds;
+
+    public Set<UserFeedBridge> getFeeds() {
+        return userFeedBridge;
     }
 
-    
 }

@@ -1,6 +1,5 @@
 package com.waigo.backend_api.Model.Entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.annotation.Nonnull;
@@ -20,15 +19,12 @@ public class Feed {
     @JoinColumn(name = "event_fk")
     private Event event;
 
-    @ManyToMany(cascade = {
-        CascadeType.DETACH
-    }, fetch = FetchType.LAZY,
-            mappedBy = "feeds")
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "feed")
+    private Set<UserFeedBridge> userFeedBridge;
+
 
     @OneToMany(mappedBy = "feed")
-    private  Set<Message> messages;
-
+    private Set<Message> messages;
 
 
     @Nonnull
@@ -69,13 +65,10 @@ public class Feed {
         this.event = event;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<UserFeedBridge> getUsers() {
+        return userFeedBridge;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 
     public Set<Message> getMessages() {
         return messages;
@@ -101,12 +94,5 @@ public class Feed {
         this.description = description;
     }
 
-
-    
-
- 
-    
-
-    
 
 }
