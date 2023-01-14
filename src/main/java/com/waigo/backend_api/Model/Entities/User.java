@@ -30,13 +30,6 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private Set<Event> events;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserFeedBridge> userFeedBridge;
-
-
-    @OneToMany(mappedBy = "user")
-    private Set<Message> messages;
-
 
     public User() {
     }
@@ -112,16 +105,5 @@ public class User {
         this.events = events;
     }
 
-    public Set<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
-    }
-
-    public Set<UserFeedBridge> getFeeds() {
-        return userFeedBridge;
-    }
 
 }

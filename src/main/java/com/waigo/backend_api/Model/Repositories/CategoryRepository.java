@@ -8,4 +8,6 @@ import com.waigo.backend_api.Model.Entities.Category;
 @Repository
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
+    Category findByName(String name);
+
 }

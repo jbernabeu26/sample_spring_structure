@@ -2,6 +2,7 @@ package com.waigo.backend_api.Model.Entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -26,10 +27,10 @@ public class Event {
     private double[] geolocation;
     @Nonnull
     private LocalDate startDate;
-    @Nonnull
+
     private LocalDate endDate;
 
-    @Nonnull
+    @Value("PrivacyStatus.PUBLIC")
     private PrivacyStatus privacy;
 
     public enum PrivacyStatus {
@@ -37,8 +38,7 @@ public class Event {
         PRIVATE,
         MIXED;
     }
-
-    @Nonnull
+    
     private Integer maxParticipants;
 
     @ElementCollection
@@ -53,27 +53,6 @@ public class Event {
     )
     private Set<Category> categories = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.DETACH})
-    @JoinTable(
-            name = "Interest_Event",
-            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "interest_id", referencedColumnName = "id")}
-    )
-    private Set<Interest> interests = new HashSet<>();
-
-
-    @ManyToMany(cascade = {CascadeType.DETACH})
-    @JoinTable(
-            name = "Location_Event",
-            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "location_id", referencedColumnName = "id")}
-    )
-    private Set<Location> locations = new HashSet<>();
-
-
-    @OneToMany(mappedBy = "event")
-    private Set<Feed> feeds;
-
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
@@ -85,8 +64,7 @@ public class Event {
 
 
     public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacyStatus privacy,
-                 Integer maxParticipants, Set<Category> categories, Set<Interest> interests, Set<Location> locations,
-                 Set<Feed> feeds, User owner) {
+                 Integer maxParticipants, Set<Category> categories, User owner) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -94,9 +72,6 @@ public class Event {
         this.privacy = privacy;
         this.maxParticipants = maxParticipants;
         this.categories = categories;
-        this.interests = interests;
-        this.locations = locations;
-        this.feeds = feeds;
         this.owner = owner;
     }
 
@@ -199,37 +174,6 @@ public class Event {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
-
-
-    public Set<Interest> getInterests() {
-        return interests;
-    }
-
-
-    public void setInterests(Set<Interest> interests) {
-        this.interests = interests;
-    }
-
-
-    public Set<Location> getLocations() {
-        return locations;
-    }
-
-
-    public void setLocations(Set<Location> locations) {
-        this.locations = locations;
-    }
-
-
-    public Set<Feed> getFeeds() {
-        return feeds;
-    }
-
-
-    public void setFeeds(Set<Feed> feeds) {
-        this.feeds = feeds;
-    }
-
 
     public User getOwner() {
         return owner;

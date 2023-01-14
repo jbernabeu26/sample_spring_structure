@@ -29,13 +29,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public void addCategory(Category category) {
+    public Category addCategory(Category category) {
         Set<ConstraintViolation<Category>> violationSet = validator.validate(category);
         if (!violationSet.isEmpty()) {
             throw new ConstraintViolationException(violationSet);
         }
 
-        categoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
     public List<Category> findAll() {
