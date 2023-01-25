@@ -18,9 +18,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull(message = "Name may not be null")
-    @NotEmpty(message = "Name may not be empty")
-    @NotBlank(message = "Name may not black")
+    @NotNull(message = "category.name_not_null")
+    @NotEmpty(message = "category.name_not_empty")
+    @NotBlank(message = "category.name_not_blank")
     @Column(unique = true)
     private String name;
 
