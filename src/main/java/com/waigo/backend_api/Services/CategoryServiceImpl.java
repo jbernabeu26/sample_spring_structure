@@ -3,6 +3,8 @@ package com.waigo.backend_api.Services;
 import java.util.List;
 import java.util.Set;
 
+import com.waigo.backend_api.Utils.TranslatorExceptions;
+import com.waigo.backend_api.Utils.WException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
@@ -18,10 +20,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     private final CategoryRepository categoryRepository;
+    private final TranslatorExceptions translatorExceptions;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryBean) {
-        this.categoryRepository = categoryBean;
+    public CategoryServiceImpl(CategoryRepository injectedCategoryBean,TranslatorExceptions injectedTranslatorException) {
+
+        this.categoryRepository = injectedCategoryBean;
+        this.translatorExceptions = injectedTranslatorException;
     }
 
 
@@ -30,13 +35,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        Set<ConstraintViolation<Category>> violationSet = validator.validate(category);
-        if (!violationSet.isEmpty()) {
-            throw new ConstraintViolationException(violationSet);
+
+        Category categoryAdded = new Category();
+        try{
+            Set<ConstraintViolation<Category>> violationSet = validator.validate(category);
+            if (!violationSet.isEmpty()) {
+                throw new ConstraintViolationException(violationSet);
+            }else{
+                categoryAdded = categoryRepository.save(category);
+            }
+        // If there are an error, we create and throw our own exception
+        }catch (ConstraintViolationException exception){
+            String codeError = exception.getConstraintViolations().iterator().next().getMessage();
+            String messageError = translatorExceptions.translateExceptionMessage(codeError);
+            throw new WException("1000",messageError);
+        }catch (Exception exception){
+            throw new WException("1001","Failed to create category");
         }
 
 
-        return categoryRepository.save(category);
+
+        return categoryAdded;
     }
 
     public List<Category> findAll() {

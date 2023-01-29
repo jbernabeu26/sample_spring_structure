@@ -25,4 +25,8 @@ public class TranslatorExceptions {
 
         return errors;
     }
+
+    public String translateExceptionMessage(String code){
+        return messageSource.getMessage(code,null, LocaleContextHolder.getLocale());
+    }
 }
