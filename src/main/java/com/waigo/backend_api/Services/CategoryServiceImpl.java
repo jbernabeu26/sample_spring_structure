@@ -1,6 +1,5 @@
 package com.waigo.backend_api.Services;
 
-import java.util.List;
 import java.util.Set;
 
 import com.waigo.backend_api.Utils.TranslatorExceptions;
@@ -9,7 +8,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.waigo.backend_api.Model.Entities.Category;
@@ -22,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final TranslatorExceptions translatorExceptions;
 
-    @Autowired
+
     public CategoryServiceImpl(CategoryRepository injectedCategoryBean,TranslatorExceptions injectedTranslatorException) {
 
         this.categoryRepository = injectedCategoryBean;
@@ -36,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category addCategory(Category category) {
 
-        Category categoryAdded = new Category();
+        Category categoryAdded;
         try{
             Set<ConstraintViolation<Category>> violationSet = validator.validate(category);
             if (!violationSet.isEmpty()) {
@@ -44,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
             }else{
                 categoryAdded = categoryRepository.save(category);
             }
-        // If there are an error, we create and throw our own exception
+        // If there is an error, we create and throw our own exception
         }catch (ConstraintViolationException exception){
             String codeError = exception.getConstraintViolations().iterator().next().getMessage();
             String messageError = translatorExceptions.translateExceptionMessage(codeError);
@@ -58,8 +56,5 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryAdded;
     }
 
-    public List<Category> findAll() {
-        return (List<Category>) categoryRepository.findAll();
-    }
 
 }
