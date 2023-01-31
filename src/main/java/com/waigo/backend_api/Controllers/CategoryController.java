@@ -2,16 +2,15 @@ package com.waigo.backend_api.Controllers;
 
 import com.waigo.backend_api.Model.Entities.Category;
 import com.waigo.backend_api.Services.CategoryServiceImpl;
-
 import com.waigo.backend_api.Utils.TranslatorExceptions;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
+import com.waigo.backend_api.Utils.WException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -20,14 +19,6 @@ import java.util.*;
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
-
-    @Autowired
-    TranslatorExceptions translatorExceptions;
-
-    @Autowired
-    @Qualifier("messageSource")
-    MessageSource messageSource;
-
 
     @Autowired
     public CategoryController(CategoryServiceImpl injectedBean) {this.categoryService = injectedBean;}
@@ -40,12 +31,9 @@ public class CategoryController {
             Category newCategory = categoryService.addCategory(body);
             result.put("status","saved");
             result.put("data",newCategory);
-        } catch (ConstraintViolationException exception) {
-            List<String> errors = Arrays.asList(exception.getMessage().split(","));
-            List<String> translatedErrors = translatorExceptions.translateExceptionMessages(errors);
-            result.put("status","error");
-            result.put("error", translatedErrors);
-            return result;
+        } catch (WException exception) {
+            // Catch own exception and return bad response
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,exception.getMessage(), exception);
         }
 
         return result;
@@ -55,7 +43,9 @@ public class CategoryController {
 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Category> getAllUsers() {
-        return categoryService.findAll();
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"test");
+        //return categoryService.findAll();
     }
 
 
