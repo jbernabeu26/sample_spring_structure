@@ -3,7 +3,6 @@ package com.waigo.backend_api.Model.Entities;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -38,7 +37,7 @@ public class Event {
         PRIVATE,
         MIXED;
     }
-    
+
     private Integer maxParticipants;
 
     @ElementCollection
@@ -56,7 +55,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
-    private User owner;
+    private CustomUser owner;
 
 
     public Event() {
@@ -64,7 +63,7 @@ public class Event {
 
 
     public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacyStatus privacy,
-                 Integer maxParticipants, Set<Category> categories, User owner) {
+                 Integer maxParticipants, Set<Category> categories, CustomUser owner) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -175,12 +174,12 @@ public class Event {
         this.categories = categories;
     }
 
-    public User getOwner() {
+    public CustomUser getOwner() {
         return owner;
     }
 
 
-    public void setOwner(User owner) {
+    public void setOwner(CustomUser owner) {
         this.owner = owner;
     }
 

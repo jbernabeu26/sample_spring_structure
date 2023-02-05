@@ -20,158 +20,162 @@ import java.util.Set;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = BackendApiApplication.class)
-public class CategoryRepositoryTest
-{
+@SpringBootTest()
+public class CategoryRepositoryTest {
     @Mock
     private CategoryRepository repository;
     private static Validator validator;
     private static Set<ConstraintViolation<Category>> violationsNull;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
+
     @Test
-    public void createCategoryWithoutData(){
+    public void createCategoryWithoutData() {
 
         Category categoryWithOutData = new Category();
         violationsNull = validator.validate(categoryWithOutData);
 
         when(repository.save(any(Category.class))).thenThrow(new ConstraintViolationException(violationsNull));
-        ConstraintViolationException thrown = Assertions.assertThrows(ConstraintViolationException.class, () ->{
+        ConstraintViolationException thrown = Assertions.assertThrows(ConstraintViolationException.class, () -> {
             repository.save(categoryWithOutData);
-        },"Incorrect format");
+        }, "Incorrect format");
 
-        Assertions.assertEquals(violationsNull.size(),thrown.getConstraintViolations().size());
-
-    }
-    @Test
-    @Disabled
-    public void createCategoryWithWrongName(){
-
-    }
-    @Test
-    @Disabled
-    public void createCategoryWithWrongName2(){
+        Assertions.assertEquals(violationsNull.size(), thrown.getConstraintViolations().size());
 
     }
 
     @Test
     @Disabled
-    public void createCategoryWithWrongName3(){
+    public void createCategoryWithWrongName() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryGreaterThan30Chars(){
+    public void createCategoryWithWrongName2() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryGreaterThan30Chars2(){
+    public void createCategoryWithWrongName3() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryLessThan30Chars(){
+    public void createCategoryGreaterThan30Chars() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryLessThan30Chars2(){
+    public void createCategoryGreaterThan30Chars2() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryWith30Chars(){
+    public void createCategoryLessThan30Chars() {
 
     }
 
     @Test
     @Disabled
-    public void createCategoryWithExistentName(){
+    public void createCategoryLessThan30Chars2() {
 
     }
 
     @Test
     @Disabled
-    public void updateCategoryWithEmptyName(){
+    public void createCategoryWith30Chars() {
 
     }
 
     @Test
     @Disabled
-    public void updateCategoryWithBlankName(){
+    public void createCategoryWithExistentName() {
 
     }
 
     @Test
     @Disabled
-    public void updateCategoryWithNullName(){
+    public void updateCategoryWithEmptyName() {
 
     }
 
     @Test
     @Disabled
-    public void updateCategoryWithExistentName(){
+    public void updateCategoryWithBlankName() {
 
     }
 
     @Test
     @Disabled
-    public void updateCategoryName(){
+    public void updateCategoryWithNullName() {
 
     }
 
     @Test
     @Disabled
-    public void deleteCategoryById(){
+    public void updateCategoryWithExistentName() {
 
     }
 
     @Test
     @Disabled
-    public void deleteCategoryByUnexistentId(){
+    public void updateCategoryName() {
 
     }
 
     @Test
     @Disabled
-    public void deleteCategoryByUnexistentName(){
+    public void deleteCategoryById() {
 
     }
 
     @Test
     @Disabled
-    public void deleteCategoryByName(){
+    public void deleteCategoryByUnexistentId() {
 
     }
 
     @Test
     @Disabled
-    public void findCategoryByUnexistentId(){
+    public void deleteCategoryByUnexistentName() {
 
     }
 
     @Test
     @Disabled
-    public void findCategoryById(){
+    public void deleteCategoryByName() {
 
     }
+
     @Test
     @Disabled
-    public void findCategoryByUnexistentName(){
+    public void findCategoryByUnexistentId() {
 
     }
+
     @Test
     @Disabled
-    public void findCategoryByName(){
+    public void findCategoryById() {
+
+    }
+
+    @Test
+    @Disabled
+    public void findCategoryByUnexistentName() {
+
+    }
+
+    @Test
+    @Disabled
+    public void findCategoryByName() {
 
     }
 
