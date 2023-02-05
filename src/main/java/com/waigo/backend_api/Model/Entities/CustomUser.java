@@ -2,11 +2,12 @@ package com.waigo.backend_api.Model.Entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
 @Entity
-public class User {
+public class CustomUser {
 
 
     @Id
@@ -18,7 +19,7 @@ public class User {
 
     private String lastName;
 
-    @Nonnull
+    @NotNull(message = "user.name_not_null")
     private String email;
 
     private String description;
@@ -31,10 +32,10 @@ public class User {
     private Set<Event> events;
 
 
-    public User() {
+    public CustomUser() {
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public CustomUser(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

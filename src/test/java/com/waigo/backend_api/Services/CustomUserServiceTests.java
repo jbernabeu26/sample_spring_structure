@@ -1,6 +1,6 @@
 package com.waigo.backend_api.Services;
 
-import com.waigo.backend_api.Model.Entities.User;
+import com.waigo.backend_api.Model.Entities.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserService.class)
-public class UserServiceTests {
+public class CustomUserServiceTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,9 +28,9 @@ public class UserServiceTests {
 
     @Test
     public void shouldReturnDefaultMessageWhenRequestForGetAllUsers() throws Exception {
-        List<User> users = new ArrayList<>();
+        List<CustomUser> customUsers = new ArrayList<>();
         //Testing service method
-        when(userService.findAll()).thenReturn(users);
+        when(userService.findAll()).thenReturn(customUsers);
 
         //Consuming the endpoint
         this.mockMvc.perform(get("/users/all")).andDo(print()).andExpect(status().isOk())

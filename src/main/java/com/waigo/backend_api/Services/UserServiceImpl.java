@@ -1,6 +1,6 @@
 package com.waigo.backend_api.Services;
 
-import com.waigo.backend_api.Model.Entities.User;
+import com.waigo.backend_api.Model.Entities.CustomUser;
 import org.springframework.stereotype.Service;
 
 import com.waigo.backend_api.Model.Repositories.UserRepository;
@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+    public List<CustomUser> findAll() {
+        return (List<CustomUser>) userRepository.findAll();
     }
 
 
