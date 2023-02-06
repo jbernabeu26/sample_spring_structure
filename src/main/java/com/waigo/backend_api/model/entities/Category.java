@@ -1,4 +1,4 @@
-package com.waigo.backend_api.Model.Entities;
+package com.waigo.backend_api.model.entities;
 
 
 import jakarta.persistence.*;

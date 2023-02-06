@@ -1,12 +1,9 @@
-package com.waigo.backend_api.Controllers;
+package com.waigo.backend_api.controllers;
 
-import com.waigo.backend_api.Model.Entities.Category;
-import com.waigo.backend_api.Services.CategoryServiceImpl;
-import com.waigo.backend_api.Utils.TranslatorExceptions;
-import com.waigo.backend_api.Utils.WException;
+import com.waigo.backend_api.model.entities.Category;
+import com.waigo.backend_api.services.CategoryServiceImpl;
+import com.waigo.backend_api.utils.WException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

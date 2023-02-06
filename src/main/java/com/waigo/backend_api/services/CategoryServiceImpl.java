@@ -1,17 +1,17 @@
-package com.waigo.backend_api.Services;
+package com.waigo.backend_api.services;
 
 import java.util.Set;
 
-import com.waigo.backend_api.Utils.TranslatorExceptions;
-import com.waigo.backend_api.Utils.WException;
+import com.waigo.backend_api.utils.TranslatorExceptions;
+import com.waigo.backend_api.utils.WException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
 
-import com.waigo.backend_api.Model.Entities.Category;
-import com.waigo.backend_api.Model.Repositories.CategoryRepository;
+import com.waigo.backend_api.model.entities.Category;
+import com.waigo.backend_api.model.repositories.CategoryRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {

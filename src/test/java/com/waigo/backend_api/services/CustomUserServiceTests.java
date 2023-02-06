@@ -1,6 +1,6 @@
-package com.waigo.backend_api.Services;
+package com.waigo.backend_api.services;
 
-import com.waigo.backend_api.Model.Entities.CustomUser;
+import com.waigo.backend_api.model.entities.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

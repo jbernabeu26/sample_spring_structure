@@ -1,9 +1,9 @@
-package com.waigo.backend_api.Services;
+package com.waigo.backend_api.services;
 
-import com.waigo.backend_api.Model.Entities.CustomUser;
+import com.waigo.backend_api.model.entities.CustomUser;
 import org.springframework.stereotype.Service;
 
-import com.waigo.backend_api.Model.Repositories.UserRepository;
+import com.waigo.backend_api.model.repositories.UserRepository;
 
 import java.util.List;
 

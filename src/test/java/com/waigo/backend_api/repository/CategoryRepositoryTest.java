@@ -1,8 +1,7 @@
 package com.waigo.backend_api.repository;
 
-import com.waigo.backend_api.BackendApiApplication;
-import com.waigo.backend_api.Model.Entities.Category;
-import com.waigo.backend_api.Model.Repositories.CategoryRepository;
+import com.waigo.backend_api.model.entities.Category;
+import com.waigo.backend_api.model.repositories.CategoryRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;

@@ -1,4 +1,4 @@
-package com.waigo.backend_api.Utils;
+package com.waigo.backend_api.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

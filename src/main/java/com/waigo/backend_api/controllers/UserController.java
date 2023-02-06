@@ -1,8 +1,8 @@
-package com.waigo.backend_api.Controllers;
+package com.waigo.backend_api.controllers;
 
 
-import com.waigo.backend_api.Model.Entities.CustomUser;
-import com.waigo.backend_api.Services.UserService;
+import com.waigo.backend_api.model.entities.CustomUser;
+import com.waigo.backend_api.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
