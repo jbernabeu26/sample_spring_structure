@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.lang.NonNull;
 
 import java.util.HashSet;
@@ -21,6 +22,7 @@ public class Category {
     @NotNull(message = "category.name_not_null")
     @NotEmpty(message = "category.name_not_empty")
     @NotBlank(message = "category.name_not_blank")
+    @Size(min=3, max=30, message = "category.name_length_incorrect")
     @Column(unique = true)
     private String name;
 
@@ -38,29 +40,14 @@ public class Category {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public Set<Event> getEvents() {
-        return events;
-    }
 
-    public void setEvents(Set<Event> events) {
-        this.events = events;
-    }
+
+
+
 
 
 }
