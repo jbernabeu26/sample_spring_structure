@@ -22,6 +22,11 @@ public class CustomUserTest {
     @Autowired
     private UserRepository userRepository;
 
+    private String validEmail = "jbernabeu26@gmail.com";
+    private String validName = "John";
+    private String validLastname = "Doe";
+    private String validPassword = "password";
+
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
@@ -40,6 +45,14 @@ public class CustomUserTest {
     public void testCreatingUserWithoutEmailFieldExpectingUserNameNotNullCode() {
         final CustomUser customUser = new CustomUser("John", "Doe", null, "password");
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.name_not_null");
+
+    }
+
+    @Test
+    public void testWithNameOver100Char() {
+        String testName = new String(new char[101]);
+        final CustomUser customUser = new CustomUser(testName, validLastname, validEmail, validPassword);
+        Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.name_overfloat");
 
     }
 

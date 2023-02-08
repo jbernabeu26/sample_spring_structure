@@ -2,6 +2,7 @@ package com.waigo.backend_api.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class CustomUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Size(max=100, message = "user.name_overfloat")
     private String firstName;
 
     private String lastName;
@@ -31,7 +33,6 @@ public class CustomUser {
 
     public CustomUser() {
     }
-
     public CustomUser(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
