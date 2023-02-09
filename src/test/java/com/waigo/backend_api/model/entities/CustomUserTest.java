@@ -72,7 +72,6 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldUsing100LengthString() {
         var with100CharsFirstName = new String(new char[100]).replace("\0", "a");
-        System.out.println(with100CharsFirstName);
         final CustomUser customUser = new CustomUser(with100CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
         try {
             userRepository.saveAndFlush(customUser);
@@ -85,7 +84,6 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldWithLessThan100AndMoreThan2LengthString() {
         var with100CharsFirstName = new String(new char[99]).replace("\0", "a");
-        System.out.println(with100CharsFirstName);
         final CustomUser customUser = new CustomUser(with100CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
         try {
             userRepository.saveAndFlush(customUser);
