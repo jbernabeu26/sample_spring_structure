@@ -22,7 +22,11 @@ public class CustomUserTest {
     @Autowired
     private UserRepository userRepository;
 
-    final String validDescription = new String(new char[301]).replace("\0", "a");
+    final String validDescription = "Hello darkness my old friend...";
+    final String validPassword = "password";
+    final String validFirstName = "John";
+    final String validLastName = "Doe";
+    final String validEmail = "john.doe@mail.com";
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
@@ -31,26 +35,26 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithoutEmailFieldExpectingConstraintViolation() {
 
-        final CustomUser customUser = new CustomUser("John", "Doe", null, "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, null, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     public void testCreatingUserWithoutEmailFieldExpectingUserNameNotNullCode() {
-        final CustomUser customUser = new CustomUser("John", "Doe", null, "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, null, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_email");
 
     }
 
     @Test
     public void testCreatingUserWithWrongEmailFormat() {
-        final CustomUser customUser = new CustomUser("John", "Doe", "wrongEmailFormat", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, "wrongEmailFormat", validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.not_valid_email");
     }
 
     @Test
     public void testCreatingUserWithCorrectEmailFormat() {
-        final CustomUser customUser = new CustomUser("John", "Doe", "john.doe@mail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, "john.doe@mail.com", validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -72,7 +76,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldUsing100LengthString() {
         var with100CharsFirstName = new String(new char[100]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with100CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(with100CharsFirstName, validLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -84,7 +88,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldWithLessThan100AndMoreThan2LengthString() {
         var with100CharsFirstName = new String(new char[99]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with100CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(with100CharsFirstName, validLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -96,7 +100,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldUsing2LengthString() {
         var with2CharsFirstName = new String(new char[2]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with2CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(with2CharsFirstName, validLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -109,7 +113,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldUsingGreaterThan100LengthString() {
         var with101CharsFirstName = new String(new char[101]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with101CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(with101CharsFirstName, validLastName, validEmail, validPassword, validDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.first_name_size");
     }
@@ -117,20 +121,20 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithFirstNameFieldUsingGreaterThan1000LengthString() {
         var with101CharsFirstName = new String(new char[1001]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with101CharsFirstName, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(with101CharsFirstName, validLastName, validEmail, validPassword, validDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.first_name_size");
     }
 
     @Test
     public void testCreatingUserWithNullFirstNameField() {
-        final CustomUser customUser = new CustomUser(null, "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(null, validLastName, validEmail, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_first_name");
     }
 
     @Test
     public void testCreatingUserWithBlankFirstNameField() {
-        final CustomUser customUser = new CustomUser("", "Doe", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser("", validLastName, validEmail, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.blank_first_name");
     }
 
@@ -142,7 +146,7 @@ public class CustomUserTest {
     public void testCreatingUserWithLastNameFieldUsing100LengthString() {
         var with100CharsLastName = new String(new char[100]).replace("\0", "a");
 
-        final CustomUser customUser = new CustomUser("John", with100CharsLastName, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -156,7 +160,7 @@ public class CustomUserTest {
     public void testCreatingUserWithLastNameFieldWithLessThan100AndMoreThan2LengthString() {
         var with100CharsLastName = new String(new char[99]).replace("\0", "a");
 
-        final CustomUser customUser = new CustomUser("John", with100CharsLastName, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -168,7 +172,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithLastNameFieldUsing2LengthString() {
         var with100CharsLastName = new String(new char[2]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", with100CharsLastName, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -181,7 +185,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithLastNameFieldUsingGreaterThan100LengthString() {
         var with101CharsLastName = new String(new char[101]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", with101CharsLastName, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, with101CharsLastName, validEmail, validPassword, validDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.last_name_size");
     }
@@ -189,20 +193,20 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithLastNameFieldUsingGreaterThan1000LengthString() {
         var with101CharsLastName = new String(new char[1001]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", with101CharsLastName, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, with101CharsLastName, validEmail, validPassword, validDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.last_name_size");
     }
 
     @Test
     public void testCreatingUserWithNullLastNameField() {
-        final CustomUser customUser = new CustomUser("John", null, "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, null, validEmail, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_last_name");
     }
 
     @Test
     public void testCreatingUserWithBlankLastNameField() {
-        final CustomUser customUser = new CustomUser("John", "", "doe@gmail.com", "password", validDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, "", validEmail, validPassword, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.blank_last_name");
     }
 
@@ -213,7 +217,7 @@ public class CustomUserTest {
     public void testCreatingUserWithDescriptionFieldUsing500LengthString() {
         var with500CharsDescription = new String(new char[500]).replace("\0", "a");
 
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", with500CharsDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with500CharsDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -227,7 +231,7 @@ public class CustomUserTest {
     public void testCreatingUserWithDescriptionFieldWithLessThan500AndMoreThan100LengthString() {
         var with199CharsDescription = new String(new char[199]).replace("\0", "a");
 
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", with199CharsDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with199CharsDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -239,7 +243,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithDescriptionFieldUsing100LengthString() {
         var with100CharsDescription = new String(new char[100]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", with100CharsDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with100CharsDescription);
         try {
             userRepository.saveAndFlush(customUser);
         } catch (Exception e) {
@@ -252,7 +256,7 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithDescriptionFieldUsingGreaterThan100LengthString() {
         var with99CharsDescription = new String(new char[99]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", with99CharsDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with99CharsDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.description_size");
     }
@@ -260,22 +264,73 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithDescriptionFieldUsingGreaterThan500LengthString() {
         var with1001CharsDescription = new String(new char[1001]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", with1001CharsDescription);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with1001CharsDescription);
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.description_size");
     }
 
     @Test
     public void testCreatingUserWithNullDescriptionField() {
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", null);
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, null);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_description");
     }
 
     @Test
     public void testCreatingUserWithBlankDescriptionField() {
-        final CustomUser customUser = new CustomUser("John", "Doe", "doe@gmail.com", "password", "");
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, "");
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.blank_description");
     }
 
+    @Test
+    public void testCreatingUserWithFirstNameToOverfloat() {
+
+        var with101CharsName = new String(new char[101]).replace("\0", "a");
+        final CustomUser customUser = new CustomUser(with101CharsName, validLastName, validEmail, validPassword, validDescription);
+        Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.first_name_size");
+    }
+
+    @Test
+    public void testCreatingUserWithFirstNameToNotOverfloat() {
+
+        var with101CharsName = new String(new char[99]).replace("\0", "a");
+        final CustomUser customUser = new CustomUser(with101CharsName, validLastName, validEmail, validPassword, validDescription);
+        //TODO: I have copied this code but don't understand the role of try/catch in here
+        try {
+            userRepository.saveAndFlush(customUser);
+        } catch (Exception e) {
+            Assertions.fail("Exception thrown when creating user with correct FirstName format");
+        }
+        Assertions.assertThat(customUser.getId()).isNotNull();
+    }
+
+    @Test
+    public void testCreatingUserWithMinData() {
+
+        var with2CharsName = new String(new char[2]).replace("\0", "a");
+        var with2CharsLastName = new String(new char[2]).replace("\0", "a");
+        var with100CharsDescription = new String(new char[100]).replace("\0", "a");
+        final CustomUser customUser = new CustomUser(with2CharsName, with2CharsLastName, validEmail, validPassword, with100CharsDescription);
+        //TODO: I have copied this code but don't understand the role of try/catch in here
+        //TODO: We do not personaly handle the assertion for Email and Password fields; I assume that's Ok.
+        try {
+            userRepository.saveAndFlush(customUser);
+        } catch (Exception e) {
+            Assertions.fail("Exception thrown when creating user with correct format fields");
+        }
+        Assertions.assertThat(customUser.getId()).isNotNull();
+    }
+
+    @Test
+    public void testCreatingUserWithNullPassword() {
+
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, null, validDescription);
+        Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_password");
+    }
+    @Test
+    public void testCreatingUserWithBlankPassword() {
+
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, " ", validDescription);
+        Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.blank_password");
+    }
 
 }
