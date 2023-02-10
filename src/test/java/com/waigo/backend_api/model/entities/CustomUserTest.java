@@ -7,11 +7,14 @@ import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Optional;
 
 
 @DataJpaTest
@@ -22,11 +25,12 @@ public class CustomUserTest {
     @Autowired
     private UserRepository userRepository;
 
-    final String validDescription = "Hello darkness my old friend...";
+    final String validDescription = new String(new char[250]).replace("\0", "a");
     final String validPassword = "password";
     final String validFirstName = "John";
     final String validLastName = "Doe";
     final String validEmail = "john.doe@mail.com";
+
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
@@ -55,11 +59,9 @@ public class CustomUserTest {
     @Test
     public void testCreatingUserWithCorrectEmailFormat() {
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, "john.doe@mail.com", validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct email format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
 
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
@@ -77,11 +79,9 @@ public class CustomUserTest {
     public void testCreatingUserWithFirstNameFieldUsing100LengthString() {
         var with100CharsFirstName = new String(new char[100]).replace("\0", "a");
         final CustomUser customUser = new CustomUser(with100CharsFirstName, validLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct first name format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
@@ -89,11 +89,9 @@ public class CustomUserTest {
     public void testCreatingUserWithFirstNameFieldWithLessThan100AndMoreThan2LengthString() {
         var with100CharsFirstName = new String(new char[99]).replace("\0", "a");
         final CustomUser customUser = new CustomUser(with100CharsFirstName, validLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct first name format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
@@ -101,11 +99,9 @@ public class CustomUserTest {
     public void testCreatingUserWithFirstNameFieldUsing2LengthString() {
         var with2CharsFirstName = new String(new char[2]).replace("\0", "a");
         final CustomUser customUser = new CustomUser(with2CharsFirstName, validLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct first name format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
 
     }
@@ -147,25 +143,22 @@ public class CustomUserTest {
         var with100CharsLastName = new String(new char[100]).replace("\0", "a");
 
         final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct last name format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
 
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
     @Test
+    @DisplayName("Test creating user with last name field using 100 length string")
     public void testCreatingUserWithLastNameFieldWithLessThan100AndMoreThan2LengthString() {
-        var with100CharsLastName = new String(new char[99]).replace("\0", "a");
+        var with99CharsLastName = new String(new char[99]).replace("\0", "a");
 
-        final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct last name format");
-        }
+        final CustomUser customUser = new CustomUser(validFirstName, with99CharsLastName, validEmail, validPassword, validDescription);
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
@@ -173,11 +166,8 @@ public class CustomUserTest {
     public void testCreatingUserWithLastNameFieldUsing2LengthString() {
         var with100CharsLastName = new String(new char[2]).replace("\0", "a");
         final CustomUser customUser = new CustomUser(validFirstName, with100CharsLastName, validEmail, validPassword, validDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct last name format");
-        }
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
 
     }
@@ -218,11 +208,9 @@ public class CustomUserTest {
         var with500CharsDescription = new String(new char[500]).replace("\0", "a");
 
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with500CharsDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct description format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
 
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
@@ -232,11 +220,9 @@ public class CustomUserTest {
         var with199CharsDescription = new String(new char[199]).replace("\0", "a");
 
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with199CharsDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct description format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
@@ -244,11 +230,10 @@ public class CustomUserTest {
     public void testCreatingUserWithDescriptionFieldUsing100LengthString() {
         var with100CharsDescription = new String(new char[100]).replace("\0", "a");
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, with100CharsDescription);
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct description format");
-        }
+
+        userRepository.saveAndFlush(customUser);
+
+
         Assertions.assertThat(customUser.getId()).isNotNull();
 
     }
@@ -290,33 +275,23 @@ public class CustomUserTest {
     }
 
     @Test
-    public void testCreatingUserWithFirstNameToNotOverfloat() {
+    public void testCreatingUserWithCorrectFirstNameFormat() {
 
-        var with101CharsName = new String(new char[99]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with101CharsName, validLastName, validEmail, validPassword, validDescription);
-        //TODO: I have copied this code but don't understand the role of try/catch in here
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct FirstName format");
-        }
+        var with99CharsName = new String(new char[99]).replace("\0", "a");
+        final CustomUser customUser = new CustomUser(with99CharsName, validLastName, validEmail, validPassword, validDescription);
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
     @Test
-    public void testCreatingUserWithMinData() {
+    public void testCreatingUserWithMinValidData() {
 
-        var with2CharsName = new String(new char[2]).replace("\0", "a");
-        var with2CharsLastName = new String(new char[2]).replace("\0", "a");
-        var with100CharsDescription = new String(new char[100]).replace("\0", "a");
-        final CustomUser customUser = new CustomUser(with2CharsName, with2CharsLastName, validEmail, validPassword, with100CharsDescription);
-        //TODO: I have copied this code but don't understand the role of try/catch in here
-        //TODO: We do not personaly handle the assertion for Email and Password fields; I assume that's Ok.
-        try {
-            userRepository.saveAndFlush(customUser);
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown when creating user with correct format fields");
-        }
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
+
+        userRepository.saveAndFlush(customUser);
+
         Assertions.assertThat(customUser.getId()).isNotNull();
     }
 
@@ -326,11 +301,50 @@ public class CustomUserTest {
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, null, validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.null_password");
     }
+
     @Test
     public void testCreatingUserWithBlankPassword() {
 
         final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, " ", validDescription);
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).hasMessageContaining("user.blank_password");
+    }
+
+
+    @Test
+    public void testFindingUserById() {
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
+        userRepository.saveAndFlush(customUser);
+        final Optional<CustomUser> foundUser = userRepository.findById(customUser.getId());
+        Assertions.assertThat(foundUser.isPresent()).isTrue();
+        Assertions.assertThat(foundUser.get().getId()).isEqualTo(customUser.getId());
+    }
+
+    @Test
+    public void testFindingUserByEmail() {
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
+        userRepository.saveAndFlush(customUser);
+        final Optional<CustomUser> foundUser = userRepository.findByEmail(customUser.getEmail());
+        Assertions.assertThat(foundUser.isPresent()).isTrue();
+        Assertions.assertThat(foundUser.get().getEmail()).isEqualTo(customUser.getEmail());
+    }
+
+
+    @Test
+    public void testDeleteUserById() {
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
+        userRepository.saveAndFlush(customUser);
+        userRepository.deleteById(customUser.getId());
+        final Optional<CustomUser> foundUser = userRepository.findById(customUser.getId());
+        Assertions.assertThat(foundUser.isPresent()).isFalse();
+    }
+
+    @Test
+    public void testDeleteByExistingEmail() {
+        final CustomUser customUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
+        userRepository.saveAndFlush(customUser);
+        userRepository.deleteByEmail(customUser.getEmail());
+        final Optional<CustomUser> foundUser = userRepository.findByEmail(customUser.getEmail());
+        Assertions.assertThat(foundUser.isPresent()).isFalse();
     }
 
 }

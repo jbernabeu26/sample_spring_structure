@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 
 import java.util.Set;
 
@@ -52,6 +51,10 @@ public class CustomUser {
         return id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public CustomUser(String firstName, String lastName, String email, String password, String description) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,5 +63,16 @@ public class CustomUser {
         this.description = description;
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
+                ", photo='" + photo + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
