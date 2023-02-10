@@ -37,6 +37,8 @@ public class CustomUser {
 
     private String photo;
 
+    @NotNull(message = "user.null_password")
+    @NotBlank(message = "user.blank_password")
     private String password;
 
     @OneToMany(mappedBy = "owner")
@@ -49,11 +51,28 @@ public class CustomUser {
         return id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public CustomUser(String firstName, String lastName, String email, String password, String description) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
+                ", photo='" + photo + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
