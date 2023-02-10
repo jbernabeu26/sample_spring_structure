@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 
 import java.util.Set;
 
@@ -37,6 +38,8 @@ public class CustomUser {
 
     private String photo;
 
+    @NotNull(message = "user.null_password")
+    @NotBlank(message = "user.blank_password")
     private String password;
 
     @OneToMany(mappedBy = "owner")
@@ -56,4 +59,6 @@ public class CustomUser {
         this.password = password;
         this.description = description;
     }
+
+
 }
