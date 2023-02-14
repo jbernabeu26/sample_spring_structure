@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import java.util.HashSet;
@@ -24,6 +26,7 @@ public class Category {
     @NotBlank(message = "category.name_not_blank")
     @Size(min=3, max=30, message = "category.name_length_incorrect")
     @Column(unique = true)
+    @Getter @Setter
     private String name;
 
     @ManyToMany(cascade = {
@@ -40,11 +43,5 @@ public class Category {
         this.name = name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getName() {
-        return name;
-    }
 }

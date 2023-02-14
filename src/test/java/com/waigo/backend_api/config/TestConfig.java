@@ -10,5 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.waigo.backend_api.model.repositories")
 @EntityScan(basePackages = "com.waigo.backend_api.model.entities")
+@ComponentScan("com.waigo.backend_api")
 public class TestConfig {
 }

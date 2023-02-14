@@ -1,5 +1,7 @@
 package com.waigo.backend_api.services;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.waigo.backend_api.utils.TranslatorExceptions;
@@ -53,6 +55,28 @@ public class CategoryServiceImpl implements CategoryService {
 
 
         return categoryAdded;
+    }
+
+    @Override
+    public Category findCategory(String categoryName){
+        Category result = null;
+        Optional<Category> category = categoryRepository.findByName(categoryName);
+        if(category.isPresent()) {
+            result = category.get();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Long deleteCategoryByName(String name) {
+        Long idRemoved = 0l;
+        idRemoved = categoryRepository.deleteByName(name);
+        return idRemoved;
     }
 
 
