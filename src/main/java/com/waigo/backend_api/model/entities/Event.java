@@ -4,6 +4,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class Event {
     private String description;
     @Nonnull
     @ElementCollection
-    private double[] geolocation;
+    private String[] geolocation;
     @Nonnull
     private LocalDateTime startDate;
 
@@ -67,7 +68,7 @@ public class Event {
 
 
     public Event(String name, String description, LocalDateTime startDate, LocalDateTime endDate, PrivacyStatus privacy,
-                 Integer maxParticipants, Set<Category> categories, CustomUser owner, double[] geolocation) {
+                 Integer maxParticipants, Set<Category> categories, CustomUser owner, String[] geolocation) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -110,12 +111,12 @@ public class Event {
     }
 
 
-    public double[] getGeolocation() {
+    public String[] getGeolocation() {
         return geolocation;
     }
 
 
-    public void setGeolocation(double[] geolocation) {
+    public void setGeolocation(String[] geolocation) {
         this.geolocation = geolocation;
     }
 

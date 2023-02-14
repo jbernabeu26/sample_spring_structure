@@ -29,12 +29,9 @@ public class EventTest {
     final LocalDateTime validStartDate = LocalDateTime.of(2023, 12, 12, 12, 0);
     final LocalDateTime validEndDate = LocalDateTime.of(2023, 12, 12, 14, 30);
     final Integer validMaxParticipants = 50;
-    //TODO: The format of this variable defined according to google maps api? String[2]
-    //TODO: This should probably be a string to avoid problems when handling decimals
-    final double[] validGeolocation = {40.009656,-105.244660};
+    final String[] validGeolocation = {"40.009656","-105.244660"};
     final Event.PrivacyStatus validPrivacy = Event.PrivacyStatus.MIXED;
     final Set<Category> validCategory =  new HashSet<>(Arrays.asList(new Category("Furbito"), new Category("Escalada")));
-    //TODO: Valid fields could be reused from CustomUserTest
     final CustomUser validOwner = new CustomUser("John", "Doe", "john.doe@gmail.com", "password", new String(new char[250]).replace("\0", "a"));
 
     @BeforeEach
