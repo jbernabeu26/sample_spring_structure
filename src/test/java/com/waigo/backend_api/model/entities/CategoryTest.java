@@ -2,29 +2,34 @@ package com.waigo.backend_api.model.entities;
 
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.CategoryRepository;
+import com.waigo.backend_api.utils.SetUp;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.Optional;
 
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CategoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    private final SetUp data = new SetUp();
 
     @BeforeAll
     public void setUp(){
@@ -60,8 +65,7 @@ public class CategoryTest {
 
     @Test
     public void createCategoryWithWrongName3(){
-        String nameBlank = new String(new char[8]).replace('\0',' ');
-        final Category category = new Category(nameBlank);
+        final Category category = new Category(data.getCategory_name_blank());
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_not_blank");
 
@@ -69,8 +73,7 @@ public class CategoryTest {
 
     @Test
     public void createCategoryGreaterThan30Chars(){
-        String name40Chars = new String(new char[40]).replace('\0','a');
-        Category category = new Category(name40Chars);
+        Category category = new Category(data.getCategory_name_40_Chars());
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
 
@@ -78,43 +81,37 @@ public class CategoryTest {
 
     @Test
     public void createCategoryGreaterThan30Chars2(){
-
-        String name70Chars = new String(new char[70]).replace('\0','a');
-        Category category = new Category(name70Chars);
+        Category category = new Category(data.getCategory_name_70_Chars());
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
     }
 
     @Test
     public void createCategoryLessThan30Chars(){
-        String name29Chars = new String(new char[29]).replace('\0','a');
-        Category category = new Category(name29Chars);
+        Category category = new Category(data.getCategory_name_29_Chars());
         categoryRepository.saveAndFlush(category);
-        final Optional<Category> foundCategory = categoryRepository.findByName(name29Chars);
+        final Optional<Category> foundCategory = categoryRepository.findByName(data.getCategory_name_29_Chars());
         Assertions.assertThat(foundCategory.isPresent()).isTrue();
         Assertions.assertThat(foundCategory.get().getName().equals(category.getName()));
     }
 
     @Test
     public void createCategoryLessThan30Chars2(){
-        String name10Chars = new String(new char[10]).replace('\0','a');
-        Category category = new Category(name10Chars);
+        Category category = new Category(data.getCategory_name_10_Chars());
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(name10Chars));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_10_Chars()));
     }
 
     @Test
     public void createCategoryWith30Chars(){
-        String name30Chars = new String(new char[30]).replace('\0','a');
-        Category category = new Category(name30Chars);
+        Category category = new Category(data.getCategory_name_30_Chars());
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(name30Chars));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_30_Chars()));
     }
 
     @Test
     public void createCategoryWith2Chars(){
-        String name2Chars = new String(new char[2]).replace('\0','a');
-        Category category = new Category(name2Chars);
+        Category category = new Category(data.getCategory_name_2_Chars());
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
 
@@ -122,10 +119,9 @@ public class CategoryTest {
 
     @Test
     public void createCategoryWith3Chars(){
-        String name3Chars = new String(new char[3]).replace('\0','a');
-        Category category = new Category(name3Chars);
+        Category category = new Category(data.getCategory_name_3_Chars());
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(name3Chars));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_3_Chars()));
     }
 
     @Test
