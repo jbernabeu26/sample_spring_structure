@@ -34,6 +34,7 @@ public class EventTest {
     public void testCreatingEventWithoutNameField(){
         final Event event = new Event(null, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
+        System.out.println(eventRepository.saveAndFlush(event));
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_name");
     }
 
