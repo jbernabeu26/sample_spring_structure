@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class SetUp {
 
+    public static final int MAX_EVENT_NAME = 100;
     /** SETUP FOR CATEGORY TESTS **/
     @Getter private final String category_name_blank = new String(new char[8]).replace('\0',' ');
     @Getter private final String category_name_40_Chars = new String(new char[40]).replace('\0','a');
