@@ -2,12 +2,9 @@ package com.waigo.backend_api.model.entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,19 +17,17 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull(message = "event.null_name")
-    @Size(min = 2, max = 100, message = "event.nameSize")
+    @Nonnull
     private String name;
     @Nonnull
-    @Size(min = 100, max = 500, message = "user.description_size")
     private String description;
     @Nonnull
     @ElementCollection
-    private String[] geolocation;
+    private double[] geolocation;
     @Nonnull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Value("PrivacyStatus.PUBLIC")
     private PrivacyStatus privacy;
@@ -67,8 +62,8 @@ public class Event {
     }
 
 
-    public Event(String name, String description, LocalDateTime startDate, LocalDateTime endDate, PrivacyStatus privacy,
-                 Integer maxParticipants, Set<Category> categories, CustomUser owner, String[] geolocation) {
+    public Event(String name, String description, LocalDate startDate, LocalDate endDate, PrivacyStatus privacy,
+                 Integer maxParticipants, Set<Category> categories, CustomUser owner) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -77,7 +72,6 @@ public class Event {
         this.maxParticipants = maxParticipants;
         this.categories = categories;
         this.owner = owner;
-        this.geolocation = geolocation;
     }
 
 
@@ -111,32 +105,32 @@ public class Event {
     }
 
 
-    public String[] getGeolocation() {
+    public double[] getGeolocation() {
         return geolocation;
     }
 
 
-    public void setGeolocation(String[] geolocation) {
+    public void setGeolocation(double[] geolocation) {
         this.geolocation = geolocation;
     }
 
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
