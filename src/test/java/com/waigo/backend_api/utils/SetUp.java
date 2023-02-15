@@ -24,18 +24,6 @@ public class SetUp {
     @Getter private final String category_name_2_Chars = new String(new char[2]).replace('\0','a');
     @Getter private final String category_name_3_Chars = new String(new char[3]).replace('\0','a');
 
-    private final Category getRandomCategory(int length){
-        {
-            Category new_category;
-            Random random = new Random();
-            char[] name = new char[length];
-            for (int i = 0; i < length; i++) {
-                char c = (char) (random.nextInt(26) + 'a');
-                name[i] = c;
-            }
-            new_category = new Category(String.valueOf(name));
-            return new_category;
-    }
 
     /** SET UP FOR CUSTOM USER TESTS**/
     @Getter private final String validDescription = new String(new char[250]).replace("\0", "a");
@@ -43,7 +31,7 @@ public class SetUp {
     @Getter private final String validFirstName = "John";
     @Getter private final String validLastName = "Doe";
     @Getter private final String validEmail = "john.doe@mail.com";
-    @Getter private final CustomUser validCustomUser = new CustomUser(validDescription, validLastName, validEmail, validPassword, validDescription);
+    @Getter private final CustomUser validCustomUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
 
     /** SET UP FOR EVENT TESTS **/
     @Getter final LocalDateTime validStartDate = LocalDateTime.of(2023, 12, 12, 12, 0);
@@ -53,6 +41,17 @@ public class SetUp {
     @Getter final Event.PrivacyStatus validPrivacy = Event.PrivacyStatus.MIXED;
     @Getter final Set<Category> validCategorySet =  new HashSet<>(Arrays.asList(getRandomCategory(10), getRandomCategory(10)));
 
+    private final Category getRandomCategory(int length){
 
+            Category new_category;
+            Random random = new Random();
+            char[] name = new char[length];
+            for (int i = 0; i < length; i++) {
+                char c = (char) (random.nextInt(26) + 'a');
+                name[i] = c;
+            }
+            new_category = new Category(String.valueOf(name));
+            return new_category;
+        }
     
 }
