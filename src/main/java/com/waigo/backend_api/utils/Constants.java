@@ -1,6 +1,6 @@
 package com.waigo.backend_api.utils;
 
-public class constants {
+public class Constants {
     /** CATEGORY **/
     public final static int CATEGORY_SIZE_NAME_MAX = 100;
     public final static int CATEGORY_SIZE_NAME_MIN = 3;

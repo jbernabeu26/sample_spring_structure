@@ -1,6 +1,5 @@
 package com.waigo.backend_api.model.entities;
 
-
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.EventRepository;
 import com.waigo.backend_api.model.repositories.UserRepository;
@@ -19,14 +18,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventTest {
 
     @Autowired
     private EventRepository eventRepository;
+
     @Autowired
     private UserRepository userRepository;
-
     private final SetUp data = new SetUp();
     @BeforeAll
     public void setUp() {

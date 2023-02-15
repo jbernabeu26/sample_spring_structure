@@ -28,7 +28,7 @@ public class Event {
     private String description;
     @Nonnull
     @ElementCollection
-    private String[] geolocation;
+    private List<String> geolocation;
     @Nonnull
     private LocalDateTime startDate;
 
@@ -68,7 +68,7 @@ public class Event {
 
 
     public Event(String name, String description, LocalDateTime startDate, LocalDateTime endDate, PrivacyStatus privacy,
-                 Integer maxParticipants, Set<Category> categories, CustomUser owner, String[] geolocation) {
+                 Integer maxParticipants, Set<Category> categories, CustomUser owner, List<String> geolocation) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -111,12 +111,12 @@ public class Event {
     }
 
 
-    public String[] getGeolocation() {
+    public List<String> getGeolocation() {
         return geolocation;
     }
 
 
-    public void setGeolocation(String[] geolocation) {
+    public void setGeolocation(List<String> geolocation) {
         this.geolocation = geolocation;
     }
 
