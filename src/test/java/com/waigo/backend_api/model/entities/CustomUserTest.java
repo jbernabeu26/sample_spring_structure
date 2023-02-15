@@ -3,7 +3,7 @@ package com.waigo.backend_api.model.entities;
 
 import com.waigo.backend_api.model.repositories.UserRepository;
 import com.waigo.backend_api.config.TestConfig;
-import com.waigo.backend_api.utils.SetUp;
+import com.waigo.backend_api.utils.MockDataGenerator;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -27,12 +27,12 @@ public class CustomUserTest {
     @Autowired
     private UserRepository userRepository;
 
-    private final SetUp data = new SetUp();
+    private final MockDataGenerator data = new MockDataGenerator();
 
 
     @Test
     public void testCreatingUserWithoutEmailFieldExpectingConstraintViolation() {
-        final CustomUser customUser = new CustomUser(data.getValidFirstName(), data.getValidLastName(), null, 
+        final CustomUser customUser = new CustomUser(data.getValidFirstName(), data.getValidLastName(), null,
                 data.getValidPassword(), data.getValidDescription());
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(customUser)).isInstanceOf(ConstraintViolationException.class);
     }

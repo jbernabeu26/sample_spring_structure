@@ -2,20 +2,18 @@ package com.waigo.backend_api.model.entities;
 
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.CategoryRepository;
-import com.waigo.backend_api.utils.SetUp;
+import com.waigo.backend_api.utils.MockDataGenerator;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -29,7 +27,7 @@ public class CategoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    private final SetUp data = new SetUp();
+    private final MockDataGenerator data = new MockDataGenerator();
 
     @BeforeAll
     public void setUp(){
@@ -65,7 +63,8 @@ public class CategoryTest {
 
     @Test
     public void createCategoryWithWrongName3(){
-        final Category category = new Category(data.getCategory_name_blank());
+        var blank = ' ';
+        final Category category = new Category(data.generateNameWithCustomChars(8, blank));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_not_blank");
 
@@ -73,7 +72,7 @@ public class CategoryTest {
 
     @Test
     public void createCategoryGreaterThan30Chars(){
-        Category category = new Category(data.getCategory_name_40_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(40));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
 
@@ -81,37 +80,37 @@ public class CategoryTest {
 
     @Test
     public void createCategoryGreaterThan30Chars2(){
-        Category category = new Category(data.getCategory_name_70_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(70));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
     }
 
     @Test
     public void createCategoryLessThan30Chars(){
-        Category category = new Category(data.getCategory_name_29_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(29));
         categoryRepository.saveAndFlush(category);
-        final Optional<Category> foundCategory = categoryRepository.findByName(data.getCategory_name_29_Chars());
+        final Optional<Category> foundCategory = categoryRepository.findByName(data.generateNameWithCustomChars(29));
         Assertions.assertThat(foundCategory.isPresent()).isTrue();
         Assertions.assertThat(foundCategory.get().getName().equals(category.getName()));
     }
 
     @Test
     public void createCategoryLessThan30Chars2(){
-        Category category = new Category(data.getCategory_name_10_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(10));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_10_Chars()));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(10)));
     }
 
     @Test
     public void createCategoryWith30Chars(){
-        Category category = new Category(data.getCategory_name_30_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(30));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_30_Chars()));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(30)));
     }
 
     @Test
     public void createCategoryWith2Chars(){
-        Category category = new Category(data.getCategory_name_2_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(2));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
                 .hasMessageContaining("category.name_length_incorrect");
 
@@ -119,9 +118,9 @@ public class CategoryTest {
 
     @Test
     public void createCategoryWith3Chars(){
-        Category category = new Category(data.getCategory_name_3_Chars());
+        Category category = new Category(data.generateNameWithCustomChars(3));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_3_Chars()));
+        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(3)));
     }
 
     @Test

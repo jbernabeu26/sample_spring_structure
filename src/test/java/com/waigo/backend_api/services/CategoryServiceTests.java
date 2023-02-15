@@ -3,7 +3,7 @@ package com.waigo.backend_api.services;
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.entities.Category;
 import com.waigo.backend_api.model.repositories.CategoryRepository;
-import com.waigo.backend_api.utils.SetUp;
+import com.waigo.backend_api.utils.MockDataGenerator;
 import com.waigo.backend_api.utils.WException;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,31 +27,32 @@ public class CategoryServiceTests {
     CategoryRepository categoryRepository;
     @Autowired
     private CategoryServiceImpl categoryService;
-    private SetUp data;
+    private MockDataGenerator data;
     @Before
     public void setUp(){
-        data = new SetUp();
-        categoryRepository.saveAndFlush(new Category(data.getCategory_name_3_Chars()));
-        categoryRepository.saveAndFlush(new Category(data.getCategory_name_30_Chars()));
-        categoryRepository.saveAndFlush(new Category(data.getCategory_name_29_Chars()));
+        data = new MockDataGenerator();
+        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(3)));
+        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(30)));
+        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(29)));
 
     }
     @Test
     public void createCategoryWithWrongName(){
+        char blank = ' ';
 
         WException thrown = Assertions.assertThrows(WException.class,
-                () -> categoryService.addCategory(new Category(data.getCategory_name_blank())));
+                () -> categoryService.addCategory(new Category(data.generateNameWithCustomChars(8, blank))));
         System.out.println(thrown.getMessage());
         Assertions.assertTrue(thrown.getMessage().contains("El nombre no deberia estar en blanco"));
 
     }
     @Test
     public void createCategory(){
-        Category categoryCreated = categoryService.addCategory(new Category(data.getCategory_name_10_Chars()));
+        Category categoryCreated = categoryService.addCategory(new Category(data.generateNameWithCustomChars(10)));
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(categoryCreated),
-                () -> Assertions.assertEquals(categoryCreated.getName(), data.getCategory_name_10_Chars()),
-                () -> Assertions.assertNotNull(categoryRepository.findByName(data.getCategory_name_10_Chars()))
+                () -> Assertions.assertEquals(categoryCreated.getName(), data.generateNameWithCustomChars(10)),
+                () -> Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(10)))
         );
 
 
@@ -59,17 +60,17 @@ public class CategoryServiceTests {
 
     @Test
     public void findCategoryUnexistent(){
-        Category categoryFound = categoryService.findCategory(data.getCategory_name_10_Chars());
+        Category categoryFound = categoryService.findCategory(data.generateNameWithCustomChars(10));
         Assertions.assertNull(categoryFound);
 
     }
 
     @Test
     public void findCategory(){
-        Category categoryFound = categoryService.findCategory(data.getCategory_name_3_Chars());
+        Category categoryFound = categoryService.findCategory(data.generateNameWithCustomChars(3));
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(categoryFound),
-                () -> Assertions.assertEquals(categoryFound.getName(),data.getCategory_name_3_Chars())
+                () -> Assertions.assertEquals(categoryFound.getName(),data.generateNameWithCustomChars(3))
 
         );
     }
@@ -82,7 +83,7 @@ public class CategoryServiceTests {
 
     @Test
     public void deleteCategoryByNameUnexistent(){
-        Long categoryIdRemoved = categoryService.deleteCategoryByName(data.getCategory_name_2_Chars());
+        Long categoryIdRemoved = categoryService.deleteCategoryByName(data.generateNameWithCustomChars(2));
         List<Category> categories = categoryService.findAllCategories();
         Assertions.assertAll(
                 () -> Assertions.assertEquals(categoryIdRemoved,0),
@@ -93,7 +94,7 @@ public class CategoryServiceTests {
 
     @Test
     public void deleteCategoryByName(){
-        Long categoryIdRemoved = categoryService.deleteCategoryByName(data.getCategory_name_3_Chars());
+        Long categoryIdRemoved = categoryService.deleteCategoryByName(data.generateNameWithCustomChars(3));
         List<Category> categories = categoryService.findAllCategories();
         Assertions.assertAll(
                 () -> Assertions.assertTrue(categoryIdRemoved>0),
