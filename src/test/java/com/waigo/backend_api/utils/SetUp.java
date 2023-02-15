@@ -6,7 +6,11 @@ import com.waigo.backend_api.model.entities.Event;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.List;
 
 
 public class SetUp {
@@ -21,9 +25,6 @@ public class SetUp {
     @Getter private final String category_name_2_Chars = new String(new char[2]).replace('\0','a');
     @Getter private final String category_name_3_Chars = new String(new char[3]).replace('\0','a');
 
-    public final String generateCategoryNameWithCustomChars(int charsLength, char customChar) {
-        return new String(new char[charsLength]).replace('\0', customChar);
-    }
 
     /** SET UP FOR CUSTOM USER TESTS**/
     @Getter private final String validDescription = new String(new char[250]).replace("\0", "a");

@@ -24,9 +24,9 @@ public class EventTest {
 
     @Autowired
     private EventRepository eventRepository;
-
     @Autowired
     private UserRepository userRepository;
+
     private final SetUp data = new SetUp();
     @BeforeAll
     public void setUp() {
