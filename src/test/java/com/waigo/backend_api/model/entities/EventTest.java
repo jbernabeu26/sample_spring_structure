@@ -3,6 +3,7 @@ package com.waigo.backend_api.model.entities;
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.EventRepository;
 import com.waigo.backend_api.model.repositories.UserRepository;
+import com.waigo.backend_api.utils.SetUp;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,23 +25,15 @@ public class EventTest {
 
     @Autowired
     private EventRepository eventRepository;
-    final String validName = new String(new char[50]).replace("\0", "a");
-    final String validDescription = new String(new char[150]).replace("\0", "a");
-    final LocalDateTime validStartDate = LocalDateTime.of(2023, 12, 12, 12, 0);
-    final LocalDateTime validEndDate = LocalDateTime.of(2023, 12, 12, 14, 30);
-    final Integer validMaxParticipants = 50;
-    final String[] validGeolocation = {"40.009656","-105.244660"};
-    final Event.PrivacyStatus validPrivacy = Event.PrivacyStatus.MIXED;
-    final Set<Category> validCategory =  new HashSet<>(Arrays.asList(new Category("Furbito"), new Category("Escalada")));
-    final CustomUser validOwner = new CustomUser("John", "Doe", "john.doe@gmail.com", "password", new String(new char[250]).replace("\0", "a"));
 
+    private final SetUp data = new SetUp();
     @BeforeEach
     public void setUp() {eventRepository.deleteAll();}
 
     @Test
     public void testCreatingEventWithoutNameField(){
-        String withNullName = null;
-        final Event event = new Event(withNullName, validDescription, validStartDate, validEndDate, validPrivacy, validMaxParticipants, validCategory, validOwner, validGeolocation);
+        final Event event = new Event(null, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
+                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_name");
     }
 
