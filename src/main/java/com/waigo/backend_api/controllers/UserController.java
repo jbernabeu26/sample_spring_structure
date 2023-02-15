@@ -23,5 +23,10 @@ public class UserController {
         return userService.findAll();
     }
 
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    public @ResponseBody CustomUser addNewUser(@RequestBody CustomUser body) {
+        return userService.addUser(body);
+    }
+
 
 }

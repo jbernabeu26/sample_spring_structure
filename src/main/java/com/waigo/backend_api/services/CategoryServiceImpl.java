@@ -48,9 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
         }catch (ConstraintViolationException exception){
             String codeError = exception.getConstraintViolations().iterator().next().getMessage();
             String messageError = translatorExceptions.translateExceptionMessage(codeError);
-            throw new WException("1000",messageError);
+            throw new WException(messageError);
         }catch (Exception exception){
-            throw new WException("1001","Failed to create category");
+            throw new WException("Failed to create category");
         }
 
 
