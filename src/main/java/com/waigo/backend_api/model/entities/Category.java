@@ -1,6 +1,7 @@
 package com.waigo.backend_api.model.entities;
 
 
+import com.waigo.backend_api.utils.Constants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,12 +22,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull(message = "category.name.null")
-    @NotEmpty(message = "category.name.empty")
-    @NotBlank(message = "category.name.blank")
-    @Size(min=3, max=30, message = "category.name.length")
+    @NotNull(message = Constants.CATEGORY_NAME_NULL)
+    @NotEmpty(message = Constants.CATEGORY_NAME_EMPTY)
+    @NotBlank(message = Constants.CATEGORY_NAME_BLANK)
+    @Size(min = Constants.CATEGORY_NAME_SIZE_MIN, max = Constants.CATEGORY_NAME_SIZE_MAX, message = Constants.CATEGORY_NAME_SIZE)
     @Column(unique = true)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
     @ManyToMany(cascade = {

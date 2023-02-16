@@ -1,5 +1,6 @@
 package com.waigo.backend_api.model.entities;
 
+import com.waigo.backend_api.utils.Constants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,34 +21,32 @@ public class CustomUser {
     @Getter
     private Integer id;
 
-    @NotNull(message = "user.null_first_name")
-    @NotBlank(message = "user.blank_first_name")
-    @Size(min = 2, max = 100, message = "user.first_name_size")
+    @NotNull(message = Constants.CUSTOM_USER_FIRST_NANE_NULL)
+    @NotBlank(message = Constants.CUSTOM_USER_FIRST_NANE_BLANK)
+    @Size(min = Constants.CUSTOM_USER_FIRST_NAME_MIN, max = Constants.CUSTOM_USER_FIRST_NAME_MAX, message = Constants.CUSTOM_USER_FIRST_NANE_SIZE)
     @Getter
     private String firstName;
 
-    @NotNull(message = "user.null_last_name")
-    @NotBlank(message = "user.blank_last_name")
-    @Size(min = 2, max = 100, message = "user.last_name_size")
+    @NotNull(message = Constants.CUSTOM_USER_LAST_NAME_NULL)
+    @NotBlank(message = Constants.CUSTOM_USER_LAST_NAME_BLANK)
+    @Size(min = Constants.CUSTOM_USER_LAST_NAME_MIN, max = Constants.CUSTOM_USER_LAST_NAME_MAX, message = Constants.CUSTOM_USER_LAST_NAME_SIZE)
     @Getter
     private String lastName;
 
-    @NotNull(message = "user.null_email")
-    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", message = "user.not_valid_email")
+    @NotNull(message = Constants.CUSTOM_USER_EMAIL_NULL)
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", message = Constants.CUSTOM_USER_EMAIL_VALID)
     @Getter
     private String email;
 
-    @NotNull(message = "user.null_description")
-    @NotBlank(message = "user.blank_description")
-    @Size(min = 100, max = 500, message = "user.description_size")
+    @Size(max = Constants.CUSTOM_USER_DESCRIPTION_MAX, message = Constants.CUSTOM_USER_DESCRIPTION_SIZE)
     @Getter
     private String description;
 
     @Getter
     private String photo;
 
-    @NotNull(message = "user.null_password")
-    @NotBlank(message = "user.blank_password")
+    @NotNull(message = Constants.CUSTOM_USER_PASSWORD_NULL)
+    @NotBlank(message = Constants.CUSTOM_USER_PASSWORD_BLANK)
     @Getter
     private String password;
 
