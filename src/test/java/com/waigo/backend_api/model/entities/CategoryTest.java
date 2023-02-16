@@ -2,8 +2,8 @@ package com.waigo.backend_api.model.entities;
 
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.CategoryRepository;
+import com.waigo.backend_api.utils.Constants;
 import com.waigo.backend_api.utils.MockDataGenerator;
-import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,14 +40,14 @@ public class CategoryTest {
     public void createCategoryWithoutData(){
         final Category category = new Category();
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_not_null");
+                .hasMessageContaining(Constants.CATEGORY_NAME_NULL);
     }
 
     @Test
     public void createCategoryWithWrongName(){
         final Category category = new Category(null);
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_not_null");
+                .hasMessageContaining(Constants.CATEGORY_NAME_NULL);
 
     }
     @Test
@@ -55,7 +55,7 @@ public class CategoryTest {
 
         final Category category = new Category("");
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_not_empty");
+                .hasMessageContaining(Constants.CATEGORY_NAME_EMPTY);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class CategoryTest {
         var blank = ' ';
         final Category category = new Category(data.generateNameWithCustomChars(8, blank));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_not_blank");
+                .hasMessageContaining(Constants.CATEGORY_NAME_BLANK);
 
     }
 
@@ -71,7 +71,7 @@ public class CategoryTest {
     public void createCategoryGreaterThan30Chars(){
         Category category = new Category(data.generateNameWithCustomChars(40));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_length_incorrect");
+                .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
 
     }
 
@@ -79,7 +79,7 @@ public class CategoryTest {
     public void createCategoryGreaterThan30Chars2(){
         Category category = new Category(data.generateNameWithCustomChars(70));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_length_incorrect");
+                .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class CategoryTest {
     public void createCategoryWith2Chars(){
         Category category = new Category(data.generateNameWithCustomChars(2));
         Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
-                .hasMessageContaining("category.name_length_incorrect");
+                .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
 
     }
 
@@ -132,7 +132,7 @@ public class CategoryTest {
         Optional<Category> category = categoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_empty");
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_EMPTY);
 
 
     }
@@ -142,7 +142,7 @@ public class CategoryTest {
         Optional<Category> category = categoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("    ");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_blank");
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_BLANK);
 
     }
 
@@ -152,7 +152,7 @@ public class CategoryTest {
         Optional<Category> category = categoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName(null);
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_null");
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_NULL);
     }
 
     @Test
