@@ -1,5 +1,7 @@
 package com.waigo.backend_api.services;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.waigo.backend_api.utils.TranslatorExceptions;
@@ -46,13 +48,35 @@ public class CategoryServiceImpl implements CategoryService {
         }catch (ConstraintViolationException exception){
             String codeError = exception.getConstraintViolations().iterator().next().getMessage();
             String messageError = translatorExceptions.translateExceptionMessage(codeError);
-            throw new WException("1000",messageError);
+            throw new WException(messageError);
         }catch (Exception exception){
-            throw new WException("1001","Failed to create category");
+            throw new WException("Failed to create category");
         }
 
 
         return categoryAdded;
+    }
+
+    @Override
+    public Category findCategory(String categoryName){
+        Category result = null;
+        Optional<Category> category = categoryRepository.findByName(categoryName);
+        if(category.isPresent()) {
+            result = category.get();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Long deleteCategoryByName(String name) {
+        Long idRemoved = 0l;
+        idRemoved = categoryRepository.deleteByName(name);
+        return idRemoved;
     }
 
 

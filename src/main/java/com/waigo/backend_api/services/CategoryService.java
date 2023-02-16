@@ -2,11 +2,16 @@ package com.waigo.backend_api.services;
 
 import com.waigo.backend_api.model.entities.Category;
 
+import java.util.List;
+
 public interface CategoryService {
 
-    // AQUI VAN DECLARADOS TODOS LOS METODOS QUE UTILIZAREMOS PARA LAS CATEGORIAS
+    Category addCategory(Category category);
+    Category findCategory(String name);
 
-    public Category addCategory(Category category);
+    List<Category> findAllCategories();
+    Long deleteCategoryByName(String name);
+
 
 
 }

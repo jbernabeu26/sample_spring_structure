@@ -3,44 +3,44 @@ package com.waigo.backend_api.model.entities;
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.EventRepository;
 import com.waigo.backend_api.model.repositories.UserRepository;
+import com.waigo.backend_api.utils.MockDataGenerator;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @DataJpaTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventTest {
 
     @Autowired
     private EventRepository eventRepository;
-    final String validName = new String(new char[50]).replace("\0", "a");
-    final String validDescription = new String(new char[150]).replace("\0", "a");
-    final LocalDateTime validStartDate = LocalDateTime.of(2023, 12, 12, 12, 0);
-    final LocalDateTime validEndDate = LocalDateTime.of(2023, 12, 12, 14, 30);
-    final Integer validMaxParticipants = 50;
-    final String[] validGeolocation = {"40.009656","-105.244660"};
-    final Event.PrivacyStatus validPrivacy = Event.PrivacyStatus.MIXED;
-    final Set<Category> validCategory =  new HashSet<>(Arrays.asList(new Category("Furbito"), new Category("Escalada")));
-    final CustomUser validOwner = new CustomUser("John", "Doe", "john.doe@gmail.com", "password", new String(new char[250]).replace("\0", "a"));
 
-    @BeforeEach
-    public void setUp() {eventRepository.deleteAll();}
+    @Autowired
+    private UserRepository userRepository;
+    private final MockDataGenerator data = new MockDataGenerator();
+    @BeforeAll
+    public void setUp() {
+        userRepository.saveAndFlush(data.getValidCustomUser());
+    }
+
+    @AfterAll
+    public void resetData(){
+        userRepository.deleteAll();
+    }
 
     @Test
     public void testCreatingEventWithoutNameField(){
-        String withNullName = null;
-        final Event event = new Event(withNullName, validDescription, validStartDate, validEndDate, validPrivacy, validMaxParticipants, validCategory, validOwner, validGeolocation);
+        final Event event = new Event(null, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
+                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_name");
     }
 

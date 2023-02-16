@@ -8,4 +8,6 @@ public interface UserService {
     // AQUI VAN DECLARADOS TODOS LOS METODOS QUE UTILIZAREMOS PARA LOS USUARIOS
     List<CustomUser> findAll();
 
+    CustomUser addUser(CustomUser user);
+
 }
