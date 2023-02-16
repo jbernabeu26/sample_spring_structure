@@ -3,7 +3,7 @@ package com.waigo.backend_api.model.entities;
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.model.repositories.EventRepository;
 import com.waigo.backend_api.model.repositories.UserRepository;
-import com.waigo.backend_api.utils.SetUp;
+import com.waigo.backend_api.utils.MockDataGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventTest {
 
     @Autowired
@@ -25,7 +26,7 @@ public class EventTest {
 
     @Autowired
     private UserRepository userRepository;
-    private final SetUp data = new SetUp();
+    private final MockDataGenerator data = new MockDataGenerator();
     @BeforeAll
     public void setUp() {
         userRepository.saveAndFlush(data.getValidCustomUser());
