@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
-@Controller
+@RestController
 @RequestMapping(path = "/category")
 public class CategoryController {
 
@@ -23,16 +23,11 @@ public class CategoryController {
 
 
     @PostMapping(path = "/add")
-    public @ResponseBody Map<String,Object> addNewCategory(@RequestBody Category body) {
+    public @ResponseBody Map<String,Object> addNewCategory(@Valid @RequestBody Category body) {
         Map<String,Object> result = new HashMap<>();
-        try {
-            Category newCategory = categoryService.addCategory(body);
-            result.put("status","saved");
-            result.put("data",newCategory);
-        } catch (WException exception) {
-            // Catch own exception and return bad response
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,exception.getMessage(), exception);
-        }
+        Category newCategory = categoryService.addCategory(body);
+        result.put("status","saved");
+        result.put("data",newCategory);
 
         return result;
 

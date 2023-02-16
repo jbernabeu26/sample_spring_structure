@@ -21,10 +21,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull(message = "category.name_not_null")
-    @NotEmpty(message = "category.name_not_empty")
-    @NotBlank(message = "category.name_not_blank")
-    @Size(min=3, max=30, message = "category.name_length_incorrect")
+    @NotNull(message = "category.name.null")
+    @NotEmpty(message = "category.name.empty")
+    @NotBlank(message = "category.name.blank")
+    @Size(min=3, max=30, message = "category.name.length")
     @Column(unique = true)
     @Getter @Setter
     private String name;
