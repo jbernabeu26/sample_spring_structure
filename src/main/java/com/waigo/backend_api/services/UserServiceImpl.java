@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public CustomUser addUser(@Valid CustomUser user) {
+    public CustomUser addUser(CustomUser user) {
         CustomUser userAdded;
 
         try {

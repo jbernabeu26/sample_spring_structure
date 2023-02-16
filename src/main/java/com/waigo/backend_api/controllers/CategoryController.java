@@ -3,6 +3,7 @@ package com.waigo.backend_api.controllers;
 import com.waigo.backend_api.model.entities.Category;
 import com.waigo.backend_api.services.CategoryServiceImpl;
 import com.waigo.backend_api.utils.WException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
