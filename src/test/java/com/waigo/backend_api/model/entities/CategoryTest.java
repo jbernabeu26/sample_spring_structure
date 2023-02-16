@@ -8,19 +8,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 
 @DataJpaTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CategoryTest {
@@ -91,21 +88,21 @@ public class CategoryTest {
         categoryRepository.saveAndFlush(category);
         final Optional<Category> foundCategory = categoryRepository.findByName(data.generateNameWithCustomChars(29));
         Assertions.assertThat(foundCategory.isPresent()).isTrue();
-        Assertions.assertThat(foundCategory.get().getName().equals(category.getName()));
+        Assertions.assertThat(foundCategory.get().getName()).isEqualTo(category.getName());
     }
 
     @Test
     public void createCategoryLessThan30Chars2(){
         Category category = new Category(data.generateNameWithCustomChars(10));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(10)));
+        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(10)).isPresent()).isTrue();
     }
 
     @Test
     public void createCategoryWith30Chars(){
         Category category = new Category(data.generateNameWithCustomChars(30));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(30)));
+        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(30))).isNotNull();
     }
 
     @Test
@@ -120,35 +117,32 @@ public class CategoryTest {
     public void createCategoryWith3Chars(){
         Category category = new Category(data.generateNameWithCustomChars(3));
         categoryRepository.saveAndFlush(category);
-        org.junit.jupiter.api.Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(3)));
+        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(3))).isNotNull();
     }
 
     @Test
     public void createCategoryWithExistentName(){
         Category category = new Category("sports");
-        DataIntegrityViolationException thrown = org.junit.jupiter.api.Assertions.assertThrows(DataIntegrityViolationException.class,
-                () -> categoryRepository.saveAndFlush(category));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().contains("could not execute statement"));
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category)).hasMessageContaining("could not execute statement");
 
     }
 
     @Test
     public void updateCategoryWithEmptyName(){
         Optional<Category> category = categoryRepository.findByName("sports");
+        Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("");
-        ConstraintViolationException thrown = org.junit.jupiter.api.Assertions.assertThrows(ConstraintViolationException.class,
-                () -> categoryRepository.saveAndFlush(category.get()));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().contains("category.name_not_empty"));
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_empty");
+
 
     }
 
     @Test
     public void updateCategoryWithBlankName(){
         Optional<Category> category = categoryRepository.findByName("sports");
+        Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("    ");
-        ConstraintViolationException thrown = org.junit.jupiter.api.Assertions.assertThrows(ConstraintViolationException.class,
-                () -> categoryRepository.saveAndFlush(category.get()));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().contains("category.name_not_blank"));
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_blank");
 
     }
 
@@ -156,80 +150,76 @@ public class CategoryTest {
     public void updateCategoryWithNullName(){
 
         Optional<Category> category = categoryRepository.findByName("sports");
+        Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName(null);
-        ConstraintViolationException thrown = org.junit.jupiter.api.Assertions.assertThrows(ConstraintViolationException.class,
-                () -> categoryRepository.saveAndFlush(category.get()));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().contains("category.name_not_null"));
-
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("category.name_not_null");
     }
 
     @Test
     public void updateCategoryWithExistentName(){
         Optional<Category> category = categoryRepository.findByName("sports");
+        Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("party");
-        DataIntegrityViolationException thrown = org.junit.jupiter.api.Assertions.assertThrows(DataIntegrityViolationException.class,
-                () -> categoryRepository.saveAndFlush(category.get()));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().contains("could not execute statement"));
+        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("could not execute statement");
 
     }
 
     @Test
     public void updateCategoryName(){
         Optional<Category> category = categoryRepository.findByName("sports");
+        Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("healthy");
         categoryRepository.saveAndFlush(category.get());
-        org.junit.jupiter.api.Assertions.assertTrue(categoryRepository.findByName("healthy").isPresent());
-        org.junit.jupiter.api.Assertions.assertFalse(categoryRepository.findByName("sports").isPresent());
+        Assertions.assertThat(categoryRepository.findByName("healthy").isPresent()).isTrue();
+        Assertions.assertThat(categoryRepository.findByName("sports").isPresent()).isFalse();
     }
 
 
 
     @Test
     public void deleteCategoryByUnexistentId(){
-        EmptyResultDataAccessException thrown = org.junit.jupiter.api.Assertions.assertThrows(EmptyResultDataAccessException.class,
-                () -> categoryRepository.deleteById(10));
-        org.junit.jupiter.api.Assertions.assertTrue(thrown.toString().matches(".*No.*10.*exists.*"));
+        Assertions.assertThatThrownBy(() -> categoryRepository.deleteById(10)).hasMessageFindingMatch(".*No.*10.*exists.*");
     }
 
     @Test
     public void deleteCategoryByUnexistentName(){
-        org.junit.jupiter.api.Assertions.assertEquals(0,categoryRepository.deleteByName("UnexistentName"));
+        Assertions.assertThat(categoryRepository.deleteByName("UnexistentName")).isEqualTo(0);
     }
 
     @Test
     public void deleteCategoryByName(){
-        org.junit.jupiter.api.Assertions.assertNotEquals(0,categoryRepository.deleteByName("party"));
-        org.junit.jupiter.api.Assertions.assertFalse(categoryRepository.findByName("party").isPresent());
+        Assertions.assertThat(categoryRepository.deleteByName("party")).isNotEqualTo(0);
+        Assertions.assertThat(categoryRepository.findByName("party").isPresent()).isFalse();
     }
 
     @Test
     public void deleteCategoryById(){
         categoryRepository.deleteById(2);
         Optional<Category> category = categoryRepository.findById(2);
-        org.junit.jupiter.api.Assertions.assertFalse(category.isPresent());
+        Assertions.assertThat(category.isPresent()).isFalse();
     }
 
     @Test
     public void findCategoryByUnexistentId(){
         Optional<Category> category = categoryRepository.findById(10);
-        org.junit.jupiter.api.Assertions.assertTrue(category.isEmpty());
+        Assertions.assertThat(category.isEmpty()).isTrue();
     }
 
     @Test
     public void findCategoryById(){
         Optional<Category> category = categoryRepository.findById(4);
-        org.junit.jupiter.api.Assertions.assertFalse(category.isEmpty());
+        Assertions.assertThat(category.isEmpty()).isFalse();
 
     }
     @Test
     public void findCategoryByUnexistentName(){
         Optional<Category> category = categoryRepository.findByName("UnexistentName");
-        org.junit.jupiter.api.Assertions.assertFalse(category.isPresent());
+        Assertions.assertThat(category.isPresent()).isFalse();
     }
     @Test
     public void findCategoryByName(){
         Optional<Category> category = categoryRepository.findByName("work");
-        org.junit.jupiter.api.Assertions.assertNotNull(category);
+        Assertions.assertThat(category).isNotNull();
     }
 
 }

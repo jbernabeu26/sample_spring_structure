@@ -6,22 +6,19 @@ import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.utils.MockDataGenerator;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.Optional;
 
-
-
 @DataJpaTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CustomUserTest {
 
     @Autowired
