@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.waigo.backend_api.utils.Constants.*;
+
 
 @Entity
 public class Event {
@@ -21,19 +23,19 @@ public class Event {
     private Integer id;
 
     @NotNull(message = "event.null_name")
-    @Size(min = 2, max = 100, message = "event.nameSize")
+    @Size(min = EVENT_NAME_MIN, max = EVENT_NAME_MAX, message = "event.name_size")
     private String name;
-    @Nonnull
-    @Size(min = 100, max = 500, message = "user.description_size")
+    @NotNull(message = "event.null_description")
+    @Size(min = EVENT_DESCRIPTION_MIN, max = EVENT_DESCRIPTION_MAX, message = "event.description_size")
     private String description;
     @Nonnull
     @ElementCollection
     private List<String> geolocation;
-    @Nonnull
+    @NotNull(message = "event.null_startDate")
     private LocalDateTime startDate;
-
+    @NotNull(message = "event.null_endDate")
     private LocalDateTime endDate;
-
+    @NotNull(message = "event.null_privacy")
     @Value("PrivacyStatus.PUBLIC")
     private PrivacyStatus privacy;
 
@@ -43,6 +45,7 @@ public class Event {
         MIXED;
     }
 
+    @Size(min = EVENT_PARTICIPANTS_MIN, max = EVENT_PARTICIPANTS_MAX, message = "event.participants_size")
     private Integer maxParticipants;
 
     @ElementCollection

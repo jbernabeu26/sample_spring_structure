@@ -35,6 +35,7 @@ public class SetUp {
     @Getter private final CustomUser validCustomUser = new CustomUser(validFirstName, validLastName, validEmail, validPassword, validDescription);
 
     /** SET UP FOR EVENT TESTS **/
+    @Getter final String validEventName = "Furbito";
     @Getter final LocalDateTime validStartDate = LocalDateTime.of(2023, 12, 12, 12, 0);
     @Getter final LocalDateTime validEndDate = LocalDateTime.of(2023, 12, 12, 14, 30);
     @Getter final Integer validMaxParticipants = 50;

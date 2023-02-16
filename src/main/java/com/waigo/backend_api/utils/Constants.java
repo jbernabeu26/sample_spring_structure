@@ -16,5 +16,7 @@ public class Constants {
     public final static int EVENT_NAME_MIN = 2;
     public final static int EVENT_DESCRIPTION_MIN = 100;
     public final static int EVENT_DESCRIPTION_MAX = 500;
+    public final static int EVENT_PARTICIPANTS_MAX = 10000;
+    public final static int EVENT_PARTICIPANTS_MIN = 2;
 
 }
