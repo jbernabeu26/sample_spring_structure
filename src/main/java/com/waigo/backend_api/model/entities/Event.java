@@ -21,7 +21,7 @@ public class Event {
     private Integer id;
 
     @NotNull(message = "event.null_name")
-    @Size(min = 2, max = 5, message = "event.name_size")
+    @Size(min = EVENT_NAME_MIN, max = EVENT_NAME_MAX, message = "event.name_size")
     @NotBlank(message="event.blank_name")
     private String name;
     @NotNull(message = "event.null_description")
@@ -43,8 +43,9 @@ public class Event {
         PRIVATE,
         MIXED;
     }
-    @Min(EVENT_PARTICIPANTS_MIN)
-    @Max(EVENT_PARTICIPANTS_MAX)
+
+    @Min(value = EVENT_PARTICIPANTS_MIN, message = "event.participants_size")
+    @Max(value = EVENT_PARTICIPANTS_MAX, message = "event.participants_size")
     private Integer maxParticipants;
 
     @ElementCollection

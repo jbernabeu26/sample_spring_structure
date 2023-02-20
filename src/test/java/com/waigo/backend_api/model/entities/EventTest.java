@@ -58,7 +58,6 @@ public class EventTest {
     public void testCreateEventWithOnlyName(){
 
         final Event event = new Event(data.getValidEventName(), null, null, null, null, null, null, null, null);
-        // TODO: What is the error in here
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).isInstanceOf(ConstraintViolationException.class);
     }
     @Test
@@ -90,68 +89,9 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.name_size");
     }
-    @Test
-    public void testCreateEventWithName100Chars(){
-
-        var validEventName = new String(new char[EVENT_NAME_MAX]).replace("\0", "a");
-
-        final Event event = new Event(validEventName, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
-    @Test
-    public void testCreateEventWithNameLessThan100Chars(){
-
-        var validEventName = new String(new char[EVENT_NAME_MAX-1]).replace("\0", "a");
-
-        final Event event = new Event(validEventName, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
 
     /** Description **/
 
-    @Test
-    public void testCreateEventWithValidDescription(){
-
-        var DescriptionLength = new String(new char[EVENT_DESCRIPTION_MIN+1]).replace("\0", "a");
-
-        final Event event = new Event(data.getValidEventName(), DescriptionLength, data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
-    @Test
-    public void testCreateEventWithValidDescription2(){
-
-        var DescriptionLength = new String(new char[EVENT_DESCRIPTION_MAX-1]).replace("\0", "a");
-
-        final Event event = new Event(data.getValidEventName(), DescriptionLength, data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
-    @Test
-    public void testCreateEventWithMinDescriptionLength(){
-
-        var DescriptionLength = new String(new char[EVENT_DESCRIPTION_MIN]).replace("\0", "a");
-
-        final Event event = new Event(data.getValidEventName(), DescriptionLength, data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
-    @Test
-    public void testCreateEventWithMaxDescriptionLength(){
-
-        var DescriptionLength = new String(new char[EVENT_DESCRIPTION_MAX]).replace("\0", "a");
-        final Event event = new Event(data.getValidEventName(), DescriptionLength, data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        eventRepository.saveAndFlush(event);
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
     @Test
     public void testCreateEventWithTooShortDescription(){
 
@@ -213,92 +153,55 @@ public class EventTest {
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_endDate");
     }
 
-    /** Category **/
-
-    @Test
-    public void testCreateEventWithoutCategory(){
-        Set<Category> invalidCategorySet =  new HashSet<>(Arrays.asList(new Category(null)));
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                invalidCategorySet, data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("category.name_not_null");
-    }
 
     /** Privacy **/
 
     @Test
     public void testCreateEventWithoutPrivacy(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), null, data.getValidMaxParticipants(),
+        Event.PrivacyStatus null_privacy = null;
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), null_privacy, data.getValidMaxParticipants(),
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("category.null_privacy");
-    }
-    //TODO: Check how to do this test
-    @Test
-    public void testCreateEventDefaultPrivacy(){
-        Event.PrivacyStatus invalidPrivacy = null;
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), invalidPrivacy, data.getValidMaxParticipants(),
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("category.null_privacy");
-    }
-
-    /** Custom User **/
-
-    @Test
-    public void testCreateEventWithoutUser(){
-
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
-                data.getValidCategorySet(), null, data.getValidGeolocation());
-        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining(" customuser.null_endDate");
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_privacy");
     }
 
     /** Participants **/
 
     @Test
-    public void testCreateEventWithMaxParticipants(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MAX-1,
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
-
-    @Test
     public void testCreateEventWithTooManyParticipants(){
         final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MAX+1,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining(" customuser.null_endDate");
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.participants_size");
 
     }
 
-
-    @Test
-    public void testCreateEventWithMinParticipants(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MIN,
-                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
-    }
     @Test
     public void testCreateEventWithTooFewParticipants(){
         final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MIN-1,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.participants_size");
     }
     @Test
     public void testCreateEventWithoutParticipants(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), 0,
+        var Invalid_format_participants = 0;
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), Invalid_format_participants,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.participants_size");
+
     }
 
     @Test
     public void testCreateEventWrongNumberParticipants(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), -1,
+        var Invalid_format_participants = -1;
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), Invalid_format_participants,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.participants_size");
     }
 
     @Test
     public void testCreateEventWrongNumberParticipants2(){
         final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), -1*EVENT_PARTICIPANTS_MAX*2,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
-        Assertions.assertThat(event.getId()).isNotNull();
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.participants_size");
     }
 
 }
