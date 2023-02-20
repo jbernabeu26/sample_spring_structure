@@ -2,9 +2,7 @@ package com.waigo.backend_api.model.entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
@@ -23,7 +21,8 @@ public class Event {
     private Integer id;
 
     @NotNull(message = "event.null_name")
-    @Size(min = EVENT_NAME_MIN, max = EVENT_NAME_MAX, message = "event.name_size")
+    @Size(min = 2, max = 5, message = "event.name_size")
+    @NotBlank(message="event.blank_name")
     private String name;
     @NotNull(message = "event.null_description")
     @Size(min = EVENT_DESCRIPTION_MIN, max = EVENT_DESCRIPTION_MAX, message = "event.description_size")
@@ -44,8 +43,8 @@ public class Event {
         PRIVATE,
         MIXED;
     }
-
-    @Size(min = EVENT_PARTICIPANTS_MIN, max = EVENT_PARTICIPANTS_MAX, message = "event.participants_size")
+    @Min(EVENT_PARTICIPANTS_MIN)
+    @Max(EVENT_PARTICIPANTS_MAX)
     private Integer maxParticipants;
 
     @ElementCollection

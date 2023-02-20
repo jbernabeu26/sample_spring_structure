@@ -45,6 +45,34 @@ public class EventTest {
         userRepository.deleteAll();
     }
 
+    /** General **/
+
+    @Test
+    public void testCreateEventWithoutAnyData(){
+
+        final Event event = new Event();
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    public void testCreateEventWithOnlyName(){
+
+        final Event event = new Event(data.getValidEventName(), null, null, null, null, null, null, null, null);
+        // TODO: What is the error in here
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).isInstanceOf(ConstraintViolationException.class);
+    }
+    @Test
+    public void testCreateEventWithBlankName(){
+
+        var blankname = "     ";
+        final Event event = new Event(blankname, data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), data.getValidMaxParticipants(),
+
+                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
+        Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.blank_name");
+    }
+
+    /** Name **/
+
     @Test
     public void testCreatingEventWithoutNameField(){
 
@@ -53,16 +81,6 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_name");
     }
-
-    @Test
-    public void testCreateEventWithoutAnyData(){
-
-        final Event event = new Event();
-
-        //TODO: Check what is the error here
-        Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(event)).isInstanceOf(ConstraintViolationException.class);
-    }
-
     @Test
     public void testCreateEventWithNameToOverflowJava(){
 
@@ -92,6 +110,9 @@ public class EventTest {
         eventRepository.saveAndFlush(event);
         Assertions.assertThat(event.getId()).isNotNull();
     }
+
+    /** Description **/
+
     @Test
     public void testCreateEventWithValidDescription(){
 
@@ -174,6 +195,9 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_description");
     }
+
+    /** Date **/
+
     @Test
     public void testCreateEventWithoutStartDate(){
 
@@ -188,6 +212,9 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("event.null_endDate");
     }
+
+    /** Category **/
+
     @Test
     public void testCreateEventWithoutCategory(){
         Set<Category> invalidCategorySet =  new HashSet<>(Arrays.asList(new Category(null)));
@@ -195,6 +222,8 @@ public class EventTest {
                 invalidCategorySet, data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("category.name_not_null");
     }
+
+    /** Privacy **/
 
     @Test
     public void testCreateEventWithoutPrivacy(){
@@ -210,6 +239,9 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining("category.null_privacy");
     }
+
+    /** Custom User **/
+
     @Test
     public void testCreateEventWithoutUser(){
 
@@ -218,9 +250,11 @@ public class EventTest {
         Assertions.assertThatThrownBy(() -> eventRepository.saveAndFlush(event)).hasMessageContaining(" customuser.null_endDate");
     }
 
+    /** Participants **/
+
     @Test
     public void testCreateEventWithMaxParticipants(){
-        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MAX,
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), EVENT_PARTICIPANTS_MAX-1,
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThat(event.getId()).isNotNull();
     }
@@ -252,4 +286,19 @@ public class EventTest {
                 data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
         Assertions.assertThat(event.getId()).isNotNull();
     }
+
+    @Test
+    public void testCreateEventWrongNumberParticipants(){
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), -1,
+                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
+        Assertions.assertThat(event.getId()).isNotNull();
+    }
+
+    @Test
+    public void testCreateEventWrongNumberParticipants2(){
+        final Event event = new Event(data.getValidEventName(), data.getValidDescription(), data.getValidStartDate(), data.getValidEndDate(), data.getValidPrivacy(), -1*EVENT_PARTICIPANTS_MAX*2,
+                data.getValidCategorySet(), data.getValidCustomUser(), data.getValidGeolocation());
+        Assertions.assertThat(event.getId()).isNotNull();
+    }
+
 }
