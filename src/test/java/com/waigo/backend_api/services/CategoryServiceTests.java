@@ -1,10 +1,10 @@
 package com.waigo.backend_api.services;
 
 import com.waigo.backend_api.config.TestConfig;
-import com.waigo.backend_api.model.entities.Category;
-import com.waigo.backend_api.model.repositories.CategoryRepository;
+import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.infrastructure.repository.JpaCategoryRepository;
 import com.waigo.backend_api.utils.MockDataGenerator;
-import com.waigo.backend_api.utils.WException;
+import com.waigo.backend_api.common.utils.WException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -24,16 +24,16 @@ import java.util.List;
 public class CategoryServiceTests {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    JpaCategoryRepository jpaCategoryRepository;
     @Autowired
     private CategoryServiceImpl categoryService;
     private MockDataGenerator data;
     @Before
     public void setUp(){
         data = new MockDataGenerator();
-        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(3)));
-        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(30)));
-        categoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(29)));
+        jpaCategoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(3)));
+        jpaCategoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(30)));
+        jpaCategoryRepository.saveAndFlush(new Category(data.generateNameWithCustomChars(29)));
 
     }
     @Test
@@ -52,7 +52,7 @@ public class CategoryServiceTests {
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(categoryCreated),
                 () -> Assertions.assertEquals(categoryCreated.getName(), data.generateNameWithCustomChars(10)),
-                () -> Assertions.assertNotNull(categoryRepository.findByName(data.generateNameWithCustomChars(10)))
+                () -> Assertions.assertNotNull(jpaCategoryRepository.findByName(data.generateNameWithCustomChars(10)))
         );
 
 

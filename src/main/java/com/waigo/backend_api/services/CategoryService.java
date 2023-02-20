@@ -1,6 +1,6 @@
 package com.waigo.backend_api.services;
 
-import com.waigo.backend_api.model.entities.Category;
+import com.waigo.backend_api.category.domain.aggregate.Category;
 
 import java.util.List;
 

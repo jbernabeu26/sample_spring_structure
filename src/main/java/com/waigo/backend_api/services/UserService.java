@@ -1,6 +1,6 @@
 package com.waigo.backend_api.services;
 
-import com.waigo.backend_api.model.entities.CustomUser;
+import com.waigo.backend_api.user.domain.aggregate.CustomUser;
 
 import java.util.List;
 

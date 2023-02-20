@@ -1,13 +1,12 @@
 package com.waigo.backend_api.services;
 
-import com.waigo.backend_api.model.entities.CustomUser;
-import com.waigo.backend_api.utils.TranslatorExceptions;
-import com.waigo.backend_api.utils.WException;
+import com.waigo.backend_api.user.domain.aggregate.CustomUser;
+import com.waigo.backend_api.common.utils.TranslatorExceptions;
+import com.waigo.backend_api.common.utils.WException;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
-import com.waigo.backend_api.model.repositories.UserRepository;
+import com.waigo.backend_api.user.infrastructure.repository.UserRepository;
 
 import java.util.List;
 

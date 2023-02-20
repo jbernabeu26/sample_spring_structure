@@ -1,8 +1,9 @@
 package com.waigo.backend_api.model.entities;
 
+import com.waigo.backend_api.category.domain.aggregate.Category;
 import com.waigo.backend_api.config.TestConfig;
-import com.waigo.backend_api.model.repositories.CategoryRepository;
-import com.waigo.backend_api.utils.Constants;
+import com.waigo.backend_api.category.infrastructure.repository.JpaCategoryRepository;
+import com.waigo.backend_api.common.utils.Constants;
 import com.waigo.backend_api.utils.MockDataGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,30 +24,30 @@ import java.util.Optional;
 public class CategoryTest {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private JpaCategoryRepository jpaCategoryRepository;
     private final MockDataGenerator data = new MockDataGenerator();
 
     @BeforeAll
     public void setUp(){
-        categoryRepository.saveAndFlush(new Category("sports"));
-        categoryRepository.saveAndFlush(new Category("study"));
-        categoryRepository.saveAndFlush(new Category("party"));
-        categoryRepository.saveAndFlush(new Category("work"));
-        categoryRepository.saveAndFlush(new Category("business"));
+        jpaCategoryRepository.saveAndFlush(new Category("sports"));
+        jpaCategoryRepository.saveAndFlush(new Category("study"));
+        jpaCategoryRepository.saveAndFlush(new Category("party"));
+        jpaCategoryRepository.saveAndFlush(new Category("work"));
+        jpaCategoryRepository.saveAndFlush(new Category("business"));
 
     }
 
     @Test
     public void createCategoryWithoutData(){
         final Category category = new Category();
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_NULL);
     }
 
     @Test
     public void createCategoryWithWrongName(){
         final Category category = new Category(null);
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_NULL);
 
     }
@@ -54,7 +55,7 @@ public class CategoryTest {
     public void createCategoryWithWrongName2(){
 
         final Category category = new Category("");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_EMPTY);
     }
 
@@ -62,7 +63,7 @@ public class CategoryTest {
     public void createCategoryWithWrongName3(){
         var blank = ' ';
         final Category category = new Category(data.generateNameWithCustomChars(8, blank));
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_BLANK);
 
     }
@@ -70,7 +71,7 @@ public class CategoryTest {
     @Test
     public void createCategoryGreaterThan30Chars(){
         Category category = new Category(data.generateNameWithCustomChars(40));
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
 
     }
@@ -78,15 +79,15 @@ public class CategoryTest {
     @Test
     public void createCategoryGreaterThan30Chars2(){
         Category category = new Category(data.generateNameWithCustomChars(70));
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
     }
 
     @Test
     public void createCategoryLessThan30Chars(){
         Category category = new Category(data.generateNameWithCustomChars(29));
-        categoryRepository.saveAndFlush(category);
-        final Optional<Category> foundCategory = categoryRepository.findByName(data.generateNameWithCustomChars(29));
+        jpaCategoryRepository.saveAndFlush(category);
+        final Optional<Category> foundCategory = jpaCategoryRepository.findByName(data.generateNameWithCustomChars(29));
         Assertions.assertThat(foundCategory.isPresent()).isTrue();
         Assertions.assertThat(foundCategory.get().getName()).isEqualTo(category.getName());
     }
@@ -94,21 +95,21 @@ public class CategoryTest {
     @Test
     public void createCategoryLessThan30Chars2(){
         Category category = new Category(data.generateNameWithCustomChars(10));
-        categoryRepository.saveAndFlush(category);
-        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(10)).isPresent()).isTrue();
+        jpaCategoryRepository.saveAndFlush(category);
+        Assertions.assertThat(jpaCategoryRepository.findByName(data.generateNameWithCustomChars(10)).isPresent()).isTrue();
     }
 
     @Test
     public void createCategoryWith30Chars(){
         Category category = new Category(data.generateNameWithCustomChars(30));
-        categoryRepository.saveAndFlush(category);
-        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(30))).isNotNull();
+        jpaCategoryRepository.saveAndFlush(category);
+        Assertions.assertThat(jpaCategoryRepository.findByName(data.generateNameWithCustomChars(30))).isNotNull();
     }
 
     @Test
     public void createCategoryWith2Chars(){
         Category category = new Category(data.generateNameWithCustomChars(2));
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category))
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category))
                 .hasMessageContaining(Constants.CATEGORY_NAME_SIZE);
 
     }
@@ -116,109 +117,109 @@ public class CategoryTest {
     @Test
     public void createCategoryWith3Chars(){
         Category category = new Category(data.generateNameWithCustomChars(3));
-        categoryRepository.saveAndFlush(category);
-        Assertions.assertThat(categoryRepository.findByName(data.generateNameWithCustomChars(3))).isNotNull();
+        jpaCategoryRepository.saveAndFlush(category);
+        Assertions.assertThat(jpaCategoryRepository.findByName(data.generateNameWithCustomChars(3))).isNotNull();
     }
 
     @Test
     public void createCategoryWithExistentName(){
         Category category = new Category("sports");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category)).hasMessageContaining("could not execute statement");
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category)).hasMessageContaining("could not execute statement");
 
     }
 
     @Test
     public void updateCategoryWithEmptyName(){
-        Optional<Category> category = categoryRepository.findByName("sports");
+        Optional<Category> category = jpaCategoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_EMPTY);
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_EMPTY);
 
 
     }
 
     @Test
     public void updateCategoryWithBlankName(){
-        Optional<Category> category = categoryRepository.findByName("sports");
+        Optional<Category> category = jpaCategoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("    ");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_BLANK);
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_BLANK);
 
     }
 
     @Test
     public void updateCategoryWithNullName(){
 
-        Optional<Category> category = categoryRepository.findByName("sports");
+        Optional<Category> category = jpaCategoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName(null);
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_NULL);
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category.get())).hasMessageContaining(Constants.CATEGORY_NAME_NULL);
     }
 
     @Test
     public void updateCategoryWithExistentName(){
-        Optional<Category> category = categoryRepository.findByName("sports");
+        Optional<Category> category = jpaCategoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("party");
-        Assertions.assertThatThrownBy(() -> categoryRepository.saveAndFlush(category.get())).hasMessageContaining("could not execute statement");
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.saveAndFlush(category.get())).hasMessageContaining("could not execute statement");
 
     }
 
     @Test
     public void updateCategoryName(){
-        Optional<Category> category = categoryRepository.findByName("sports");
+        Optional<Category> category = jpaCategoryRepository.findByName("sports");
         Assertions.assertThat(category.isPresent()).isTrue();
         category.get().setName("healthy");
-        categoryRepository.saveAndFlush(category.get());
-        Assertions.assertThat(categoryRepository.findByName("healthy").isPresent()).isTrue();
-        Assertions.assertThat(categoryRepository.findByName("sports").isPresent()).isFalse();
+        jpaCategoryRepository.saveAndFlush(category.get());
+        Assertions.assertThat(jpaCategoryRepository.findByName("healthy").isPresent()).isTrue();
+        Assertions.assertThat(jpaCategoryRepository.findByName("sports").isPresent()).isFalse();
     }
 
 
 
     @Test
     public void deleteCategoryByUnexistentId(){
-        Assertions.assertThatThrownBy(() -> categoryRepository.deleteById(10)).hasMessageFindingMatch(".*No.*10.*exists.*");
+        Assertions.assertThatThrownBy(() -> jpaCategoryRepository.deleteById(10)).hasMessageFindingMatch(".*No.*10.*exists.*");
     }
 
     @Test
     public void deleteCategoryByUnexistentName(){
-        Assertions.assertThat(categoryRepository.deleteByName("UnexistentName")).isEqualTo(0);
+        Assertions.assertThat(jpaCategoryRepository.deleteByName("UnexistentName")).isEqualTo(0);
     }
 
     @Test
     public void deleteCategoryByName(){
-        Assertions.assertThat(categoryRepository.deleteByName("party")).isNotEqualTo(0);
-        Assertions.assertThat(categoryRepository.findByName("party").isPresent()).isFalse();
+        Assertions.assertThat(jpaCategoryRepository.deleteByName("party")).isNotEqualTo(0);
+        Assertions.assertThat(jpaCategoryRepository.findByName("party").isPresent()).isFalse();
     }
 
     @Test
     public void deleteCategoryById(){
-        categoryRepository.deleteById(2);
-        Optional<Category> category = categoryRepository.findById(2);
+        jpaCategoryRepository.deleteById(2);
+        Optional<Category> category = jpaCategoryRepository.findById(2);
         Assertions.assertThat(category.isPresent()).isFalse();
     }
 
     @Test
     public void findCategoryByUnexistentId(){
-        Optional<Category> category = categoryRepository.findById(10);
+        Optional<Category> category = jpaCategoryRepository.findById(10);
         Assertions.assertThat(category.isEmpty()).isTrue();
     }
 
     @Test
     public void findCategoryById(){
-        Optional<Category> category = categoryRepository.findById(4);
+        Optional<Category> category = jpaCategoryRepository.findById(4);
         Assertions.assertThat(category.isEmpty()).isFalse();
 
     }
     @Test
     public void findCategoryByUnexistentName(){
-        Optional<Category> category = categoryRepository.findByName("UnexistentName");
+        Optional<Category> category = jpaCategoryRepository.findByName("UnexistentName");
         Assertions.assertThat(category.isPresent()).isFalse();
     }
     @Test
     public void findCategoryByName(){
-        Optional<Category> category = categoryRepository.findByName("work");
+        Optional<Category> category = jpaCategoryRepository.findByName("work");
         Assertions.assertThat(category).isNotNull();
     }
 

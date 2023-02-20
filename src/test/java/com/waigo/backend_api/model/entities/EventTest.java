@@ -1,8 +1,9 @@
 package com.waigo.backend_api.model.entities;
 
 import com.waigo.backend_api.config.TestConfig;
-import com.waigo.backend_api.model.repositories.EventRepository;
-import com.waigo.backend_api.model.repositories.UserRepository;
+import com.waigo.backend_api.event.domain.aggregate.Event;
+import com.waigo.backend_api.event.infrastructure.repository.EventRepository;
+import com.waigo.backend_api.user.infrastructure.repository.UserRepository;
 import com.waigo.backend_api.utils.MockDataGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;

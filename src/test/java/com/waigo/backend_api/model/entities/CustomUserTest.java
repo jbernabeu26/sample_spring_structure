@@ -1,9 +1,10 @@
 package com.waigo.backend_api.model.entities;
 
 
-import com.waigo.backend_api.model.repositories.UserRepository;
+import com.waigo.backend_api.user.domain.aggregate.CustomUser;
+import com.waigo.backend_api.user.infrastructure.repository.UserRepository;
 import com.waigo.backend_api.config.TestConfig;
-import com.waigo.backend_api.utils.Constants;
+import com.waigo.backend_api.common.utils.Constants;
 import com.waigo.backend_api.utils.MockDataGenerator;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;

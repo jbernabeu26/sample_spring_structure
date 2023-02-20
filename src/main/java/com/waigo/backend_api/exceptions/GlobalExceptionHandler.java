@@ -1,10 +1,7 @@
 package com.waigo.backend_api.exceptions;
 
-import com.waigo.backend_api.utils.TranslatorExceptions;
+import com.waigo.backend_api.common.utils.TranslatorExceptions;
 import lombok.RequiredArgsConstructor;
-import com.waigo.backend_api.utils.TranslatorExceptions;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -4,28 +4,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import com.waigo.backend_api.utils.TranslatorExceptions;
-import com.waigo.backend_api.utils.WException;
+import com.waigo.backend_api.common.utils.TranslatorExceptions;
+import com.waigo.backend_api.common.utils.WException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
 
-import com.waigo.backend_api.model.entities.Category;
-import com.waigo.backend_api.model.repositories.CategoryRepository;
+import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.infrastructure.repository.JpaCategoryRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
 
-    private final CategoryRepository categoryRepository;
+    private final JpaCategoryRepository jpaCategoryRepository;
     private final TranslatorExceptions translatorExceptions;
 
 
-    public CategoryServiceImpl(CategoryRepository injectedCategoryBean,TranslatorExceptions injectedTranslatorException) {
+    public CategoryServiceImpl(JpaCategoryRepository injectedCategoryBean, TranslatorExceptions injectedTranslatorException) {
 
-        this.categoryRepository = injectedCategoryBean;
+        this.jpaCategoryRepository = injectedCategoryBean;
         this.translatorExceptions = injectedTranslatorException;
     }
 
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (!violationSet.isEmpty()) {
                 throw new ConstraintViolationException(violationSet);
             }else{
-                categoryAdded = categoryRepository.save(category);
+                categoryAdded = jpaCategoryRepository.save(category);
             }
         // If there is an error, we create and throw our own exception
         }catch (ConstraintViolationException exception){
@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findCategory(String categoryName){
         Category result = null;
-        Optional<Category> category = categoryRepository.findByName(categoryName);
+        Optional<Category> category = jpaCategoryRepository.findByName(categoryName);
         if(category.isPresent()) {
             result = category.get();
         }
@@ -69,13 +69,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
+        return jpaCategoryRepository.findAll();
     }
 
     @Override
     public Long deleteCategoryByName(String name) {
         Long idRemoved = 0l;
-        idRemoved = categoryRepository.deleteByName(name);
+        idRemoved = jpaCategoryRepository.deleteByName(name);
         return idRemoved;
     }
 
