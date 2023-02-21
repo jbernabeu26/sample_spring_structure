@@ -1,10 +1,6 @@
 package com.waigo.backend_api.services;
 
 import com.waigo.backend_api.model.entities.CustomUser;
-import com.waigo.backend_api.utils.TranslatorExceptions;
-import com.waigo.backend_api.utils.WException;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import com.waigo.backend_api.model.repositories.UserRepository;
@@ -15,11 +11,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final TranslatorExceptions translatorExceptions;
 
-    public UserServiceImpl(UserRepository userRepository, TranslatorExceptions injectedTranslatorException) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.translatorExceptions = injectedTranslatorException;
     }
 
 
@@ -29,19 +23,7 @@ public class UserServiceImpl implements UserService {
 
 
     public CustomUser addUser(CustomUser user) {
-        CustomUser userAdded;
-
-        try {
-            userAdded = userRepository.save(user);
-        } catch (ConstraintViolationException exception) {
-            String codeError = exception.getConstraintViolations().iterator().next().getMessage();
-            String messageError = translatorExceptions.translateExceptionMessage(codeError);
-            throw new WException(messageError);
-        } catch (Exception exception) {
-            throw new WException("Failed to create user");
-        }
-
-        return userAdded;
+        return userRepository.save(user);
     }
 
 }

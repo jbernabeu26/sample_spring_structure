@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
@@ -25,6 +26,7 @@ public class CustomUser {
     @NotBlank(message = Constants.CUSTOM_USER_FIRST_NANE_BLANK)
     @Size(min = Constants.CUSTOM_USER_FIRST_NAME_MIN, max = Constants.CUSTOM_USER_FIRST_NAME_MAX, message = Constants.CUSTOM_USER_FIRST_NANE_SIZE)
     @Getter
+    @Setter
     private String firstName;
 
     @NotNull(message = Constants.CUSTOM_USER_LAST_NAME_NULL)
