@@ -1,5 +1,13 @@
 package com.waigo.hexagonal.presentation.user;
 
+import com.waigo.hexagonal.application.UserService;
+import com.waigo.hexagonal.presentation.event.EventDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -10,15 +18,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+        UserDTO createdUser = userService.createUser(user);
         return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO user) {
         user.setId(userId);
-        User updatedUser = userService.updateUser(user);
+        UserDTO updatedUser = userService.updateUser(user);
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -29,22 +37,22 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        User user = userService.getUserById(userId);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+        UserDTO user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{userId}/events")
-    public ResponseEntity<List<Event>> getEventsByUser(@PathVariable Long userId) {
-        User user = new User();
+    public ResponseEntity<List<EventDTO>> getEventsByUser(@PathVariable Long userId) {
+        UserDTO user = new UserDTO();
         user.setId(userId);
-        List<Event> events = userService.getEventsByUser(user);
+        List<EventDTO> events = userService.getEventsByUser(user);
         return ResponseEntity.ok(events);
     }
 }

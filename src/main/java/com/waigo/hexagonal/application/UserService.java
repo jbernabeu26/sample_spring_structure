@@ -1,13 +1,15 @@
 package com.waigo.hexagonal.application;
 
-import com.waigo.hexagonal.domain.user.User;
+import com.waigo.hexagonal.presentation.event.EventDTO;
+import com.waigo.hexagonal.presentation.user.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    User createUser(User user);
-    User updateUser(User user);
+    UserDTO createUser(UserDTO user);
+    UserDTO updateUser(UserDTO user);
     void deleteUser(Long userId);
-    User getUserById(Long userId);
-    List<User> getAllUsers();
+    UserDTO getUserById(Long userId);
+    List<UserDTO> getAllUsers();
+    List<EventDTO> getEventsByUser(UserDTO user);
 }

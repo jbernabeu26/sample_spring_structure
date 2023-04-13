@@ -1,6 +1,8 @@
 package com.waigo.hexagonal.infraestructure.category;
 
 import com.waigo.hexagonal.domain.category.CategoryRepository;
+import com.waigo.hexagonal.domain.category.Category;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,8 +27,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Category findById(Long categoryId) {
-        //return jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        return jpaCategoryRepository.findById(categoryId);
+        return jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }
 
     @Override

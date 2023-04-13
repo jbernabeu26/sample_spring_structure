@@ -1,6 +1,8 @@
 package com.waigo.hexagonal.infraestructure.user;
 
 import com.waigo.hexagonal.domain.user.UserRepository;
+import com.waigo.hexagonal.domain.user.User;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,8 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(Long userId) {
-        //return jpaUserRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return jpaUserRepository.findById(userId);
+        return jpaUserRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override

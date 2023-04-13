@@ -1,5 +1,13 @@
 package com.waigo.hexagonal.infraestructure.event;
 
+import com.waigo.hexagonal.domain.category.Category;
+import com.waigo.hexagonal.domain.event.EventRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Repository;
+import com.waigo.hexagonal.domain.event.Event;
+
+import java.util.List;
+
 @Repository
 public class EventRepositoryImpl implements EventRepository {
     private final JpaEventRepository jpaEventRepository;

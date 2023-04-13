@@ -2,6 +2,7 @@ package com.waigo.hexagonal.application;
 
 import com.waigo.hexagonal.domain.category.Category;
 import com.waigo.hexagonal.domain.category.CategoryRepository;
+import com.waigo.hexagonal.presentation.category.CategoryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category createCategory(Category category) {
+    public CategoryDTO createCategory(CategoryDTO category) {
         return categoryRepository.save(category);
     }
 
