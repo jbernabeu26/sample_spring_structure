@@ -1,6 +1,6 @@
 package com.waigo.backend_api.model.entities;
 
-import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.domain.entity.Category;
 import com.waigo.backend_api.config.TestConfig;
 import com.waigo.backend_api.category.infrastructure.repository.JpaCategoryRepository;
 import com.waigo.backend_api.common.utils.Constants;

@@ -1,7 +1,8 @@
 package com.waigo.backend_api.category.application.dto;
 
 import lombok.Builder;
+import org.springframework.stereotype.Component;
 
-@Builder(toBuilder = true)
+@Component
 public record AddCategoryResponse() {
 }

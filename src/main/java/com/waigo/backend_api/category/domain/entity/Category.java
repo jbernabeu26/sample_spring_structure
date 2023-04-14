@@ -1,12 +1,9 @@
-package com.waigo.backend_api.category.domain.aggregate;
+package com.waigo.backend_api.category.domain.entity;
 
 
-import com.waigo.backend_api.event.domain.aggregate.Event;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Builder
 @Getter
@@ -15,8 +12,5 @@ public class Category {
 
     private Integer id;
     private String name;
-
-    private Set<Event> events;
-
 
 }

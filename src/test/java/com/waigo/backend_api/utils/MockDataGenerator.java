@@ -1,6 +1,6 @@
 package com.waigo.backend_api.utils;
 
-import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.domain.entity.Category;
 import com.waigo.backend_api.user.domain.aggregate.CustomUser;
 import com.waigo.backend_api.event.domain.aggregate.Event;
 import lombok.Getter;

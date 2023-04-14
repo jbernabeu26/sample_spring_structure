@@ -1,6 +1,6 @@
 package com.waigo.backend_api.category.infrastructure.repository;
 
-import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.domain.entity.Category;
 import com.waigo.backend_api.category.domain.port.CategoryRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

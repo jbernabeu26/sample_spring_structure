@@ -3,7 +3,7 @@ package com.waigo.backend_api.category.application.usecase;
 import com.waigo.backend_api.category.application.dto.AddCategoryRequest;
 import com.waigo.backend_api.category.application.dto.AddCategoryResponse;
 import com.waigo.backend_api.category.application.mapper.CategoryMapper;
-import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.domain.entity.Category;
 import com.waigo.backend_api.category.domain.service.CategorySaver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

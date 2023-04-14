@@ -1,17 +1,17 @@
 package com.waigo.backend_api.category.application.mapper;
 
 import com.waigo.backend_api.category.application.dto.AddCategoryRequest;
-import com.waigo.backend_api.category.domain.aggregate.Category;
+import com.waigo.backend_api.category.domain.entity.Category;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class CategoryMapper {
 
     public static Category fromAddCategoryRequest(final AddCategoryRequest addCategoryRequest) {
         return Category.builder()
-                .id(addCategoryRequest.id())
-                .name(addCategoryRequest.name())
-                .events(addCategoryRequest.events())
+                .id(addCategoryRequest.getIdDto())
+                .name(addCategoryRequest.getNombre())
                 .build();
 
     }
