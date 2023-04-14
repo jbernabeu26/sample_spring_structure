@@ -4,14 +4,18 @@ import com.waigo.backend_api.category.domain.aggregate.Category;
 import com.waigo.backend_api.category.domain.port.CategoryRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
+@Repository
 public class CategoryRepository implements CategoryRepositoryInterface {
 
+    @Autowired
     private final JpaCategoryRepository jpaCategoryRepository;
 
     @Override

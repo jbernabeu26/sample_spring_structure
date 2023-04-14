@@ -6,12 +6,14 @@ import com.waigo.backend_api.category.application.mapper.CategoryMapper;
 import com.waigo.backend_api.category.domain.aggregate.Category;
 import com.waigo.backend_api.category.domain.service.CategorySaver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class AddCategoryUseCase {
 
+    @Autowired
     private final CategorySaver categorySaver;
 
     public AddCategoryResponse execute(final AddCategoryRequest addCategoryRequest) {
