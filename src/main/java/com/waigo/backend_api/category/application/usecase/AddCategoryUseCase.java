@@ -8,9 +8,8 @@ import com.waigo.backend_api.category.domain.service.CategorySaver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AddCategoryUseCase {
 
     @Autowired
