@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class CategoryRepository implements CategoryRepositoryInterface {
 
-    @Autowired
+
     private final JpaCategoryRepository jpaCategoryRepository;
 
     @Override

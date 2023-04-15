@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 public class CategoryMapper {
 
     public static Category fromAddCategoryRequest(final AddCategoryRequest addCategoryRequest) {
-        return Category.builder()
-                .id(addCategoryRequest.id())
-                .name(addCategoryRequest.name())
-                .build();
+        Category category = new Category();
+        category.setName(addCategoryRequest.name());
+        return category;
+
 
     }
 }

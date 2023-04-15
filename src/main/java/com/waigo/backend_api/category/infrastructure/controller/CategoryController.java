@@ -6,6 +6,7 @@ import com.waigo.backend_api.category.application.usecase.AddCategoryUseCase;
 import com.waigo.backend_api.category.domain.entity.Category;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping(path = "/category")
 public class CategoryController {
 
+    @Autowired
     private final AddCategoryUseCase addCategoryUseCase;
 
-//    @Autowired
-//    public CategoryController(CategoryServiceImpl injectedBean) {this.categoryService = injectedBean;}
+
 
     @PostMapping(path = "/add")
     public ResponseEntity<AddCategoryResponse> addNewCategory(@Valid @RequestBody AddCategoryRequest addCategoryRequest) {
-//        Map<String,Object> result = new HashMap<>();
-//        Category newCategory = categoryService.addCategory(body);
-//        result.put("status","saved");
-//        result.put("data",newCategory);
-//
-//        return result;
         final AddCategoryResponse addCategoryResponse = addCategoryUseCase.execute(addCategoryRequest);
         return ResponseEntity.ok(addCategoryResponse);
     }

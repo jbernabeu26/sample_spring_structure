@@ -1,16 +1,26 @@
 package com.waigo.backend_api.category.domain.entity;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
-@Builder
+
+@Entity
+@AllArgsConstructor
 @Getter
 @Setter
 public class Category {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+
+    public Category(){}
+
+
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface JpaCategoryRepository extends CrudRepository<Category, Integer> {
+public interface JpaCategoryRepository extends JpaRepository<Category, Integer> {
 
     Optional<Category> findByName(String name);
     List<Category> findAll();
